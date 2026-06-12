@@ -1,12 +1,288 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My First Page</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-    <p>Have hope page links to all the other places. along with clietn testemonies when they scroll down. access to socials </p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}MiloFitness – Built Different{% endblock %}
 
+{% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero">
+
+  <!-- BACKGROUND: swap the div below for your photo when ready -->
+<img class="hero-photo" src="{{ url_for('static', filename='images/MiloPhoto1.png') }}" alt="Alex training">
+
+
+  <!-- Dark overlay so text is always readable over the photo -->
+  <div class="hero-overlay"></div>
+
+  <!-- Hero content -->
+  <div class="hero-content">
+    <p class="hero-eyebrow">The Coach You Need</p>
+
+    <h1 class="hero-title">
+      <span class="title-line title-line--white">MILO</span>
+      <span class="title-line title-line--accent">FITNESS</span>
+    </h1>
+
+    <p class="hero-tagline">Personal Training &nbsp;·&nbsp; Online Coaching &nbsp;·&nbsp; Strength Programs</p>
+
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn--primary">Start Your Journey</a>
+      <a href="{{ url_for('about') }}" class="btn btn--ghost">Meet Alex</a>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
+</section><!-- /.hero -->
+
+
+<!-- ========== STATS STRIP ========== -->
+<section class="stats-strip">
+  <div class="stats-container">
+    <div class="stat-item">
+      <span class="stat-num">200<span class="stat-plus">+</span></span>
+      <span class="stat-label">Clients Transformed</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Years of Experience</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Coaching Programs</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num">100<span class="stat-plus">%</span></span>
+      <span class="stat-label">Results Focused</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== ABOUT TEASER ========== -->
+<section class="about-teaser section">
+  <div class="container">
+    <div class="about-teaser__grid">
+
+      <div class="about-teaser__img-wrap">
+        <!-- Swap this div for <img src="..." alt="Alex"> when you have a photo -->
+        <div class="img-placeholder">
+          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+            <circle cx="36" cy="24" r="16" stroke="#0a84ff" stroke-width="1.2" stroke-dasharray="4 3"/>
+            <path d="M4 72 Q4 46 36 46 Q68 46 68 72" stroke="#0a84ff" stroke-width="1.2" stroke-dasharray="4 3"/>
+          </svg>
+          <span>Add Alex's Photo</span>
+        </div>
+        <div class="img-accent-border"></div>
+      </div>
+
+      <div class="about-teaser__text">
+        <p class="section-eyebrow">The Coach</p>
+        <h2 class="section-title">Alex Milosavjev</h2>
+        <p class="about-teaser__desc">
+          From a skinny kid who knew nothing about the gym, to building a thriving coaching brand —
+          Alex's journey is proof that consistency beats talent every time.
+        </p>
+        <p class="about-teaser__desc">
+          Certified personal trainer, nutrition coach, and founder of MiloFitness.
+          Alex has helped hundreds of everyday people hit goals they never thought possible.
+        </p>
+        <a href="{{ url_for('about') }}" class="btn btn--primary">Read Alex's Story</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== PROGRAMS PREVIEW ========== -->
+<section class="programs-preview section section--dark">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">What's on offer</p>
+      <h2 class="section-title">Programs Built For Results</h2>
+    </div>
+    <div class="programs-grid">
+
+      <div class="program-card">
+        <div class="program-card__icon">🏋️</div>
+        <h3>1-on-1 Personal Training</h3>
+        <p>In-person sessions tailored entirely to your goals. Alex trains you, pushes you, and tracks your progress every step.</p>
+        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
+      </div>
+
+      <div class="program-card program-card--featured">
+        <div class="program-card__badge">Most Popular</div>
+        <div class="program-card__icon">📲</div>
+        <h3>Online Coaching</h3>
+        <p>Full custom program, weekly check-ins, nutrition guidance and direct access to Alex — no matter where you are.</p>
+        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__icon">💪</div>
+        <h3>Strength Programs</h3>
+        <p>Downloadable structured strength programs designed to build serious muscle and hit new PBs month after month.</p>
+        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== TESTIMONIALS ========== -->
+<section class="testimonials section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Real People. Real Results.</p>
+      <h2 class="section-title">What Clients Say</h2>
+    </div>
+
+    <div class="testimonials-track-wrap">
+      <div class="testimonials-track" id="testimonialsTrack">
+        {% for t in testimonials %}
+        <div class="testimonial-card">
+          <div class="testimonial-stars">
+            {% for i in range(t.rating) %}★{% endfor %}
+          </div>
+          <p class="testimonial-text">"{{ t.text }}"</p>
+          <span class="testimonial-name">— {{ t.name }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="testimonial-controls">
+        <button class="t-btn" id="tPrev" aria-label="Previous">&#8592;</button>
+        <div class="t-dots" id="tDots"></div>
+        <button class="t-btn" id="tNext" aria-label="Next">&#8594;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== SOCIALS ========== -->
+<section class="socials-section section section--dark">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Stay connected</p>
+      <h2 class="section-title">Follow The Journey</h2>
+    </div>
+    <div class="socials-grid">
+
+      <a href="https://instagram.com/milofitness" target="_blank" class="social-card">
+        <div class="social-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <span class="social-card__name">Instagram</span>
+        <span class="social-card__handle">@milofitness</span>
+      </a>
+
+      <a href="https://facebook.com/milofitness" target="_blank" class="social-card">
+        <div class="social-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </div>
+        <span class="social-card__name">Facebook</span>
+        <span class="social-card__handle">MiloFitness</span>
+      </a>
+
+      <a href="https://tiktok.com/@milofitness" target="_blank" class="social-card">
+        <div class="social-card__icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.29 6.29 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg>
+        </div>
+        <span class="social-card__name">TikTok</span>
+        <span class="social-card__handle">@milofitness</span>
+      </a>
+
+      <a href="https://youtube.com/milofitness" target="_blank" class="social-card">
+        <div class="social-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </div>
+        <span class="social-card__name">YouTube</span>
+        <span class="social-card__handle">MiloFitness</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CONTACT ========== -->
+<section class="contact-section section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <div class="contact-text">
+        <p class="section-eyebrow">Get Started</p>
+        <h2 class="section-title">Ready To Train?</h2>
+        <p>Drop your details below and Alex will personally reach out to discuss how MiloFitness can help you hit your goals.</p>
+        <ul class="contact-details">
+          <li>📍 Plus Fitness, Sydney</li>
+          <li>📧 alex@milofitness.com.au</li>
+          <li>📱 Available via DM on Instagram</li>
+        </ul>
+      </div>
+
+      <form class="contact-form" action="{{ url_for('contact') }}" method="POST">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="Tell Alex about your goals..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full">Send Message</button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+  // ── Testimonial carousel ──────────────────────────────
+  const track  = document.getElementById('testimonialsTrack');
+  const dotsEl = document.getElementById('tDots');
+
+  if (track && track.children.length > 0) {
+    const cards = Array.from(track.children);
+    let current = 0;
+
+    cards.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 't-dot' + (i === 0 ? ' active' : '');
+      d.dataset.idx = i;
+      d.addEventListener('click', () => goTo(i));
+      dotsEl.appendChild(d);
+    });
+
+    function goTo(idx) {
+      current = (idx + cards.length) % cards.length;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      dotsEl.querySelectorAll('.t-dot').forEach((d, i) =>
+        d.classList.toggle('active', i === current)
+      );
+    }
+
+    document.getElementById('tNext').addEventListener('click', () => goTo(current + 1));
+    document.getElementById('tPrev').addEventListener('click', () => goTo(current - 1));
+
+    setInterval(() => goTo(current + 1), 5000);
+  }
+</script>
+{% endblock %}
