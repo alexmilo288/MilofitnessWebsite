@@ -25,7 +25,7 @@
     <p class="hero-tagline">Personal Training &nbsp;·&nbsp; Online Coaching &nbsp;·&nbsp; Strength Programs</p>
 
     <div class="hero-cta">
-      <a href="#contact" class="btn btn--primary">Start Your Journey</a>
+      <a href="{{ url_for('programs') }}" class="btn btn--primary">Start Your Journey</a>
       <a href="{{ url_for('about') }}" class="btn btn--ghost">Meet Alex</a>
     </div>
   </div>
@@ -43,23 +43,23 @@
 <section class="stats-strip">
   <div class="stats-container">
     <div class="stat-item">
-      <span class="stat-num">200<span class="stat-plus">+</span></span>
+      <span class="stat-num">...<span class="stat-plus">+</span></span>
       <span class="stat-label">Clients Transformed</span>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
-      <span class="stat-num">6</span>
+      <span class="stat-num">.</span>
       <span class="stat-label">Years of Experience</span>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
-      <span class="stat-num">3</span>
-      <span class="stat-label">Coaching Programs</span>
+      <span class="stat-num">...</span>
+      <span class="stat-label">Certified</span>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item">
-      <span class="stat-num">100<span class="stat-plus">%</span></span>
-      <span class="stat-label">Results Focused</span>
+      <span class="stat-num"><span class="stat-plus">%</span></span>
+      <span class="stat-label">Client Satisfaction</span>
     </div>
   </div>
 </section>
@@ -71,15 +71,9 @@
     <div class="about-teaser__grid">
 
       <div class="about-teaser__img-wrap">
-        <!-- Swap this div for <img src="..." alt="Alex"> when you have a photo -->
-        <div class="img-placeholder">
-          <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
-            <circle cx="36" cy="24" r="16" stroke="#0a84ff" stroke-width="1.2" stroke-dasharray="4 3"/>
-            <path d="M4 72 Q4 46 36 46 Q68 46 68 72" stroke="#0a84ff" stroke-width="1.2" stroke-dasharray="4 3"/>
-          </svg>
-          <span>Add Alex's Photo</span>
-        </div>
-        <div class="img-accent-border"></div>
+
+      <img src="{{ url_for('static', filename='images/AlexPhoto.png') }}" alt="Alex">
+      <div class="img-accent-border"></div>
       </div>
 
       <div class="about-teaser__text">
@@ -114,7 +108,7 @@
         <div class="program-card__icon">🏋️</div>
         <h3>1-on-1 Personal Training</h3>
         <p>In-person sessions tailored entirely to your goals. Alex trains you, pushes you, and tracks your progress every step.</p>
-        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
+        <a href="programs.html" class="card-link">Learn more →</a>
       </div>
 
       <div class="program-card program-card--featured">
@@ -122,14 +116,14 @@
         <div class="program-card__icon">📲</div>
         <h3>Online Coaching</h3>
         <p>Full custom program, weekly check-ins, nutrition guidance and direct access to Alex — no matter where you are.</p>
-        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
+        <a href="programs.html" class="card-link">Learn more →</a>
       </div>
 
       <div class="program-card">
         <div class="program-card__icon">💪</div>
         <h3>Strength Programs</h3>
         <p>Downloadable structured strength programs designed to build serious muscle and hit new PBs month after month.</p>
-        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
+        <a href="programs.html" class="card-link">Learn more →</a>
       </div>
 
     </div>
@@ -217,35 +211,26 @@
 <!-- ========== CONTACT ========== -->
 <section class="contact-section section" id="contact">
   <div class="container">
-    <div class="contact-grid">
-
-      <div class="contact-text">
-        <p class="section-eyebrow">Get Started</p>
-        <h2 class="section-title">Ready To Train?</h2>
-        <p>Drop your details below and Alex will personally reach out to discuss how MiloFitness can help you hit your goals.</p>
-        <ul class="contact-details">
-          <li>📍 Plus Fitness, Sydney</li>
-          <li>📧 alex@milofitness.com.au</li>
-          <li>📱 Available via DM on Instagram</li>
-        </ul>
+    <div style="
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    ">
+      <p class="section-eyebrow">Get Started</p>
+      <h2 class="section-title" style="font-size: clamp(2.8rem, 6vw, 5rem);">
+        Ready To Train?
+      </h2>
+      <p style="color: var(--grey); font-size: 1.1rem; max-width: 480px; line-height: 1.8;">
+        Whether you're just starting out or chasing a new PB — Alex has a program built for you.
+      </p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;">
+        <a href="{{ url_for('programs') }}" class="btn btn--primary">Find A Program</a>
+        <a href="https://www.instagram.com/milofitness" target="_blank" class="btn btn--ghost">DM Alex on Instagram</a>
       </div>
-
-      <form class="contact-form" action="{{ url_for('contact') }}" method="POST">
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" placeholder="Your name" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="4" placeholder="Tell Alex about your goals..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn--primary btn--full">Send Message</button>
-      </form>
-
     </div>
   </div>
 </section>

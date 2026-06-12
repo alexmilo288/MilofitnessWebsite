@@ -1,12 +1,23 @@
+import os
+import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
 app.secret_key = 'milofitness_secret_key'
 
+DB_PATH = 'database/milofitness.db'
+
+def get_db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 @app.route('/')
 def home():
-    return render_template('1home.html')
+    db = get_db()
+    testimonials = db.execute('SELECT * FROM testimonials').fetchall()
+    db.close()
+    return render_template('1home.html', testimonials=testimonials)
 
 @app.route('/about')
 def about():
@@ -20,22 +31,9 @@ def programs():
 def merch():
     return render_template('merch.html')
 
-@app.route('/timetable')
-def timetable():
-    return render_template('timetable.html')
-
 @app.route('/login')
 def login():
     return render_template('login.html')
-
-@app.route('/contact', methods=['POST'])
-def contact():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    message = request.form.get('message')
-    # TODO: send email to Alex or store in DB
-    flash(f"Thanks {name}! Alex will be in touch soon.")
-    return redirect(url_for('home') + '#contact')
 
 if __name__ == '__main__':
     app.run(debug=True)
