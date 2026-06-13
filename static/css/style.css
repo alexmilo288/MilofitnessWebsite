@@ -50,9 +50,11 @@ img { max-width: 100%; display: block; }
 .accent     { color: var(--blue); }
 
 .section-header { text-align: center; margin-bottom: 60px; }
+
+
 .section-eyebrow {
   font-family: var(--font-cond);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -598,15 +600,16 @@ img.hero-photo {
   transition: all var(--transition);
 }
 .t-btn:hover { border-color: var(--blue); color: var(--blue); }
-.t-dots { display: flex; gap: 8px; }
-.t-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--dark-4);
-  cursor: pointer;
-  transition: background var(--transition);
+
+
+.t-dots {
+  font-size: 0.85rem;
+  color: var(--grey);
+  letter-spacing: 0.05em;
+  min-width: 3rem;
+  text-align: center;
 }
-.t-dot.active { background: var(--blue); }
+
 
 /* ============================================================
    SOCIALS
@@ -827,4 +830,693 @@ img.hero-photo {
 
 @media (max-width: 480px) {
   .hero-title { font-size: clamp(4.5rem, 22vw, 7rem); }
+}
+
+
+/* ============================================================
+   about.css — MiloFitness About / Journey Page
+   Place in: static/css/about.css
+   Requires: static/css/style.css (loaded via base.html)
+   ============================================================ */
+
+/* ============================================================
+   JOURNEY HERO
+   ============================================================ */
+.journey-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.journey-hero__bg {
+  position: absolute;
+  inset: 0;
+  background: var(--dark);
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 80px, rgba(255,255,255,0.02) 80px, rgba(255,255,255,0.02) 81px),
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.02) 80px, rgba(255,255,255,0.02) 81px);
+}
+.journey-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(10,132,255,0.08) 0%, transparent 60%);
+}
+.journey-hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: var(--nav-h);
+  padding-bottom: 40px;
+}
+.journey-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 14vw, 12rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 0.88;
+  text-transform: uppercase;
+  margin: 12px 0 24px;
+  display: flex;
+  flex-direction: column;
+}
+.journey-hero__sub {
+  font-family: var(--font-cond);
+  font-size: clamp(15px, 2vw, 18px);
+  letter-spacing: 2px;
+  color: var(--grey);
+  max-width: 520px;
+  line-height: 1.6;
+}
+.journey-hero__scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.25);
+  font-family: var(--font-cond);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   TRANSFORMATION SECTION
+   ============================================================ */
+.transform-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+.transform-stage {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* Silhouette */
+.silhouette-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.silhouette-svg {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  filter: drop-shadow(0 0 40px rgba(10,132,255,0.15));
+  transition: filter 0.4s ease;
+}
+.silhouette-svg.phase-2 {
+  filter: drop-shadow(0 0 60px rgba(10,132,255,0.3));
+}
+
+/* Floating stat badges */
+.stat-badge {
+  position: absolute;
+  background: var(--dark-3);
+  border: 1px solid rgba(10,132,255,0.3);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+.stat-badge--weight { top: 80px;    right: -10px; }
+.stat-badge--bf     { bottom: 80px; right: -10px; }
+.stat-badge__val {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.stat-badge__unit {
+  font-family: var(--font-cond);
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 700;
+}
+.stat-badge__label {
+  font-family: var(--font-cond);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--grey);
+  text-transform: uppercase;
+}
+
+/* Controls side */
+.transform-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Chapter dots */
+.chapter-dots {
+  display: flex;
+  align-items: center;
+}
+.chapter-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.chapter-dot::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--grey-light);
+  background: var(--dark);
+  transition: all 0.3s ease;
+  display: block;
+}
+.chapter-dot.active::before {
+  border-color: var(--blue);
+  background: var(--blue);
+  box-shadow: 0 0 12px var(--blue-glow);
+}
+.dot-year {
+  font-family: var(--font-cond);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--grey);
+  transition: color 0.3s ease;
+  order: -1;
+}
+.chapter-dot.active .dot-year { color: var(--blue); }
+.dot-label {
+  font-family: var(--font-cond);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--grey-light);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+.chapter-dot.active .dot-label { color: var(--off-white); }
+.dot-connector {
+  flex: 1;
+  height: 1px;
+  background: var(--dark-4);
+  margin-bottom: 18px;
+  min-width: 40px;
+}
+
+/* Scrub slider */
+.scrub-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.journey-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 3px;
+  background: var(--dark-4);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  background-image: linear-gradient(var(--blue), var(--blue));
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+}
+.journey-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--blue);
+  cursor: pointer;
+  box-shadow: 0 0 16px var(--blue-glow);
+  transition: transform 0.15s ease;
+}
+.journey-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+.journey-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 3px solid var(--blue);
+  cursor: pointer;
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+.scrub-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-cond);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--grey-light);
+}
+
+/* Chapter card */
+.chapter-card {
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.chapter-card__phase {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.chapter-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: 14px;
+  line-height: 1.1;
+}
+.chapter-card__quote {
+  font-size: 15px;
+  font-style: italic;
+  color: var(--blue);
+  border-left: 2px solid rgba(10,132,255,0.4);
+  padding-left: 14px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.chapter-card__body {
+  color: var(--grey);
+  font-size: 15px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.chapter-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  border-top: 1px solid var(--dark-4);
+  padding-top: 20px;
+}
+.cstat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cstat__val {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.cstat__val small {
+  font-size: 1rem;
+  color: var(--blue);
+}
+.cstat__label {
+  font-family: var(--font-cond);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* ============================================================
+   MILESTONES TIMELINE
+   ============================================================ */
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.timeline__line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--dark-4) 10%, var(--dark-4) 90%, transparent);
+  transform: translateX(-50%);
+}
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 60px;
+  position: relative;
+}
+.timeline-item--left  { justify-content: flex-end;   padding-right: calc(50% + 40px); }
+.timeline-item--right { justify-content: flex-start; padding-left:  calc(50% + 40px); }
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid var(--dark);
+  box-shadow: 0 0 12px var(--blue-glow);
+  z-index: 1;
+}
+.timeline-dot--gold {
+  background: #f5a623;
+  box-shadow: 0 0 16px rgba(245,166,35,0.4);
+}
+.timeline-card {
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  max-width: 360px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.timeline-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.timeline-card:hover {
+  border-color: rgba(10,132,255,0.3);
+  transform: translateY(-4px);
+}
+.timeline-card--gold {
+  border-color: rgba(245,166,35,0.3);
+  background: linear-gradient(160deg, var(--dark-3), rgba(245,166,35,0.04));
+}
+.timeline-card--gold:hover { border-color: rgba(245,166,35,0.5); }
+.timeline-year {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blue);
+  display: block;
+  margin-bottom: 8px;
+}
+.timeline-year--gold { color: #f5a623; }
+.timeline-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.timeline-card p {
+  color: var(--grey);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   PHILOSOPHY CTA
+   ============================================================ */
+.philosophy__inner {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+.philosophy__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--white);
+  margin: 16px 0 24px;
+}
+.philosophy__body {
+  font-size: 17px;
+  color: var(--grey);
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+.philosophy__ctas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .transform-stage { grid-template-columns: 1fr; gap: 40px; }
+  .silhouette-wrap { max-width: 240px; margin: 0 auto; }
+  .stat-badge--weight,
+  .stat-badge--bf   { right: 20px; }
+}
+@media (max-width: 768px) {
+  .timeline__line { left: 24px; }
+  .timeline-item--left,
+  .timeline-item--right {
+    justify-content: flex-start;
+    padding-left: 60px;
+    padding-right: 0;
+  }
+  .timeline-dot      { left: 24px; }
+  .timeline-card     { max-width: 100%; }
+  .chapter-stats     { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .dot-connector  { min-width: 20px; }
+  .chapter-card   { padding: 20px; }
+  .chapter-stats  { grid-template-columns: 1fr; }
+}
+
+
+
+
+/* ============================================================
+   ABOUT PAGE ADDITIONS
+   Paste these rules at the bottom of static/css/style.css
+   (or into a separate about.css loaded after style.css)
+   ============================================================ */
+
+/* ── Scroll fade-in ─────────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── Extra breathing room below the hero ───────────────── */
+.transform-section {
+  padding-top: 140px;
+  padding-bottom: 120px;
+}
+
+/* ── Photo stage (replaces silhouette-wrap) ─────────────── */
+.photo-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Main photo frame */
+.photo-frame {
+  position: relative;
+}
+.photo-frame__inner {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  max-width: 340px;
+}
+
+/* Individual phase placeholders */
+.photo-ph {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--dark-3);
+  border: 2px dashed var(--dark-4);
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  cursor: default;
+  text-align: center;
+  padding: 24px;
+}
+.photo-ph.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Subtle tinted top border per phase */
+.photo-ph--0 { border-top: 3px solid rgba(10,132,255,0.3); }
+.photo-ph--1 { border-top: 3px solid rgba(10,132,255,0.6); }
+.photo-ph--2 { border-top: 3px solid var(--blue); }
+
+.photo-ph__icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--dark-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  opacity: 0.5;
+  margin-bottom: 4px;
+}
+.photo-ph__year {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--white);
+  line-height: 1;
+  opacity: 0.12;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  pointer-events: none;
+}
+.photo-ph__label {
+  font-family: var(--font-cond);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+.photo-ph__hint {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--blue);
+  opacity: 0.7;
+}
+
+/* To use a real image instead of a placeholder, add an <img> tag
+   inside the .photo-ph div and remove the icon/label/hint elements.
+   Example:
+     <div class="photo-ph photo-ph--0 active" data-chapter="0">
+       <img src="{{ url_for('static', filename='img/alex-2019.jpg') }}" alt="Alex 2019">
+     </div>
+*/
+.photo-ph img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Thumbnail strip */
+.photo-thumbs {
+  display: flex;
+  gap: 10px;
+  max-width: 340px;
+}
+.photo-thumb {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+.photo-thumb.active { opacity: 1; }
+.photo-thumb:hover  { opacity: 0.75; }
+
+.photo-thumb__img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  border: 1px solid var(--dark-4);
+  background: var(--dark-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--grey-light);
+  transition: border-color 0.3s ease;
+  overflow: hidden;
+}
+.photo-thumb.active .photo-thumb__img {
+  border-color: var(--blue);
+  box-shadow: 0 0 12px var(--blue-glow);
+}
+
+/* To swap in real thumbnail images, replace the <svg> inside
+   .photo-thumb__img with an <img> tag:
+     <img src="{{ url_for('static', filename='img/alex-2019-thumb.jpg') }}" alt="2019">
+*/
+.photo-thumb__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.photo-thumb__year {
+  font-family: var(--font-cond);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--grey);
+  transition: color 0.3s ease;
+}
+.photo-thumb.active .photo-thumb__year { color: var(--blue); }
+
+/* ── Stat badges (repositioned for photo frame) ──────────── */
+.photo-frame .stat-badge--weight { top: 20px;    right: -12px; }
+.photo-frame .stat-badge--bf     { bottom: 80px; right: -12px; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .photo-frame__inner { max-width: 100%; }
+  .photo-thumbs       { max-width: 100%; }
+  .photo-frame .stat-badge--weight,
+  .photo-frame .stat-badge--bf { right: 8px; }
+  .transform-section { padding-top: 80px; padding-bottom: 80px; }
+}
+@media (max-width: 480px) {
+  .photo-ph__icon { width: 52px; height: 52px; }
+  .transform-section { padding-top: 60px; }
 }

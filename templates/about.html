@@ -1,10 +1,322 @@
 {% extends "base.html" %}
+
+{% block title %}The Journey — MiloFitness{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block content %}
-<section class="section" style="min-height:60vh; padding-top:calc(var(--nav-h) + 60px);">
-  <div class="container" style="text-align:center;">
-    <p class="section-eyebrow">Coming Soon</p>
-    <h2 class="section-title">This Page</h2>
-    <p style="color:var(--grey);margin-top:20px;">Under construction — check back soon.</p>
-  </div>
-</section>
+
+  <!-- ============ JOURNEY HERO ============ -->
+  <section class="journey-hero">
+    <div class="journey-hero__bg"></div>
+    <div class="journey-hero__overlay"></div>
+    <div class="container journey-hero__content">
+      <p class="section-eyebrow">The Story of</p>
+      <h1 class="journey-hero__title">
+        <span class="title-line title-line--white">Alex</span>
+        <span class="title-line title-line--accent">Milosavljev</span>
+      </h1>
+      <p class="journey-hero__sub">From skinny and weak to a stage-ready competitor. A transformation of a lifetime.</p>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ============ TRANSFORMATION SLIDER ============ -->
+  <section class="transform-section section--dark fade-up">
+    <div class="container">
+      <div class="transform-header">
+        <p class="section-eyebrow">Physique Transformation</p>
+        <h2 class="section-title">DRAG TO SEE THE CHANGE</h2>
+      </div>
+
+      <div class="transform-stage">
+
+        <!-- ── Photo side ── -->
+        <div class="photo-stage">
+
+          <!-- Main active photo frame -->
+          <div class="photo-frame" id="activePhoto">
+            <div class="photo-frame__inner" id="photoInner">
+
+              <!-- Chapter 0 placeholder (visible by default) -->
+              <div class="photo-ph photo-ph--0 active" data-chapter="0">
+                <div class="photo-ph__icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </div>
+                <span class="photo-ph__year">2019</span>
+                <span class="photo-ph__label">Add your photo here</span>
+                <span class="photo-ph__hint">60 kg · The Start</span>
+              </div>
+
+              <!-- Chapter 1 placeholder -->
+              <div class="photo-ph photo-ph--1" data-chapter="1">
+                <div class="photo-ph__icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </div>
+                <span class="photo-ph__year">2021</span>
+                <span class="photo-ph__label">Add your photo here</span>
+                <span class="photo-ph__hint">78 kg · The Grind</span>
+              </div>
+
+              <!-- Chapter 2 placeholder -->
+              <div class="photo-ph photo-ph--2" data-chapter="2">
+                <div class="photo-ph__icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </div>
+                <span class="photo-ph__year">2023</span>
+                <span class="photo-ph__label">Add your photo here</span>
+                <span class="photo-ph__hint">85 kg · Stage Ready</span>
+              </div>
+
+            </div>
+
+            <!-- Floating stat badges -->
+            <div class="stat-badge stat-badge--weight">
+              <span class="stat-badge__val" id="badgeWeight">60</span>
+              <span class="stat-badge__unit">kg</span>
+              <span class="stat-badge__label">Body Weight</span>
+            </div>
+            <div class="stat-badge stat-badge--bf">
+              <span class="stat-badge__val" id="badgeBf">18</span>
+              <span class="stat-badge__unit">%</span>
+              <span class="stat-badge__label">Body Fat</span>
+            </div>
+          </div>
+
+          <!-- Thumbnail strip -->
+          <div class="photo-thumbs">
+            <div class="photo-thumb active" data-thumb="0">
+              <div class="photo-thumb__img">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </div>
+              <span class="photo-thumb__year">2019</span>
+            </div>
+            <div class="photo-thumb" data-thumb="1">
+              <div class="photo-thumb__img">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </div>
+              <span class="photo-thumb__year">2021</span>
+            </div>
+            <div class="photo-thumb" data-thumb="2">
+              <div class="photo-thumb__img">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </div>
+              <span class="photo-thumb__year">2023</span>
+            </div>
+          </div>
+
+        </div><!-- /photo-stage -->
+
+        <!-- ── Controls side (unchanged) ── -->
+        <div class="transform-controls">
+          <!-- Chapter dots -->
+          <div class="chapter-dots" id="chapterDots">
+            <button class="chapter-dot active" data-chapter="0">
+              <span class="dot-year">2019</span>
+              <span class="dot-label">The Start</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="1">
+              <span class="dot-year">2021</span>
+              <span class="dot-label">The Grind</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="2">
+              <span class="dot-year">2023</span>
+              <span class="dot-label">The Stage</span>
+            </button>
+          </div>
+
+          <!-- Scrub slider -->
+          <div class="scrub-wrap">
+            <input type="range" id="journeySlider" class="journey-slider" min="0" max="100" value="0" />
+            <div class="scrub-labels">
+              <span>SKINNY</span>
+              <span>BUILT</span>
+              <span>STAGE READY</span>
+            </div>
+          </div>
+
+          <!-- Chapter story card -->
+          <div class="chapter-card" id="chapterCard">
+            <div class="chapter-card__phase" id="cardPhase">Chapter 01</div>
+            <h3 class="chapter-card__title" id="cardTitle">The Skinny Kid</h3>
+            <p class="chapter-card__quote" id="cardQuote">"I was embarrassed to take my shirt off. Something had to change."</p>
+            <p class="chapter-card__body" id="cardBody">
+              At 17, Milo weighed just 60kg. Despite being active, he struggled to build any muscle and felt invisible in every room he walked into. Fed up with feeling weak, he walked into a gym for the first time with no plan — just a decision to never look the same again.
+            </p>
+            <div class="chapter-stats" id="chapterStats">
+              <div class="cstat">
+                <span class="cstat__val">60<small>kg</small></span>
+                <span class="cstat__label">Start Weight</span>
+              </div>
+              <div class="cstat">
+                <span class="cstat__val">0</span>
+                <span class="cstat__label">Gym Sessions</span>
+              </div>
+              <div class="cstat">
+                <span class="cstat__val">Day 1</span>
+                <span class="cstat__label">The Decision</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MILESTONES TIMELINE ============ -->
+  <section class="milestones section fade-up">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Key Moments</p>
+        <h2 class="section-title">MILESTONES</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline__line"></div>
+
+        <div class="timeline-item timeline-item--left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2019</span>
+            <h3>First Day at the Gym</h3>
+            <p>Walked in at 60kg with zero knowledge. Left with a purpose. The journey officially began.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2020</span>
+            <h3>First 10kg Gained</h3>
+            <p>A full year of consistency. No shortcuts, no fancy supplements — just showing up every single day.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2021</span>
+            <h3>Certified Personal Trainer</h3>
+            <p>Earned his PT certification. What started as a personal obsession became a profession. First client signed within a week.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2022</span>
+            <h3>Coaching 50+ Clients</h3>
+            <p>Word spread fast. Transformed bodies started producing testimonials, referrals, and a growing waitlist.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--left">
+          <div class="timeline-dot timeline-dot--gold"></div>
+          <div class="timeline-card timeline-card--gold">
+            <span class="timeline-year timeline-year--gold">2023</span>
+            <h3>First Bodybuilding Competition 🏆</h3>
+            <p>Stepped on stage for the first time at the NABBA Nationals. 4 years of work distilled into one moment. Placed in the top 5 in Men's Physique.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHILOSOPHY CTA ============ -->
+  <section class="philosophy section--dark section fade-up">
+    <div class="container">
+      <div class="philosophy__inner">
+        <p class="section-eyebrow">The Method</p>
+        <h2 class="philosophy__title">BUILT ON PROOF,<br><span class="accent">NOT PROMISES</span></h2>
+        <p class="philosophy__body">
+          Every program Milo coaches is rooted in exactly what worked for him — and the 100+ clients who came after. No fluff, no fads. Just the fundamentals, applied with precision and relentless consistency.
+        </p>
+        <div class="philosophy__ctas">
+          <a href="{{ url_for('programs') }}" class="btn btn--primary">View Programs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+  /* ── Scroll fade-in ─────────────────────────────────────── */
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  /* ── Photo switching ────────────────────────────────────── */
+  const photoPhs   = document.querySelectorAll('.photo-ph');
+  const thumbs     = document.querySelectorAll('.photo-thumb');
+
+  function switchPhoto(chapter) {
+    photoPhs.forEach(ph => ph.classList.remove('active'));
+    thumbs.forEach(t  => t.classList.remove('active'));
+    const target = document.querySelector(`.photo-ph[data-chapter="${chapter}"]`);
+    const thumb  = document.querySelector(`.photo-thumb[data-thumb="${chapter}"]`);
+    if (target) target.classList.add('active');
+    if (thumb)  thumb.classList.add('active');
+  }
+
+  /* Hook into existing chapter-dot clicks */
+  document.querySelectorAll('.chapter-dot').forEach(btn => {
+    btn.addEventListener('click', () => switchPhoto(btn.dataset.chapter));
+  });
+
+  /* Thumbnail clicks */
+  thumbs.forEach(t => {
+    t.addEventListener('click', () => {
+      const ch = t.dataset.thumb;
+      switchPhoto(ch);
+      /* Sync chapter dots + card if main.js exposes a function */
+      const dot = document.querySelector(`.chapter-dot[data-chapter="${ch}"]`);
+      if (dot) dot.click();
+    });
+  });
+
+  /* Sync photo to slider position */
+  const slider = document.getElementById('journeySlider');
+  if (slider) {
+    slider.addEventListener('input', () => {
+      const v = parseInt(slider.value);
+      const ch = v < 34 ? 0 : v < 67 ? 1 : 2;
+      switchPhoto(ch);
+    });
+  }
+  </script>
 {% endblock %}

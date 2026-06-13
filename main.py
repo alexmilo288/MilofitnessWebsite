@@ -5,7 +5,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 app = Flask(__name__)
 app.secret_key = 'milofitness_secret_key'
 
-DB_PATH = 'database/milofitness.db'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, 'database', 'milofitness.db')
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)

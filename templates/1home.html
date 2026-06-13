@@ -72,7 +72,7 @@
 
       <div class="about-teaser__img-wrap">
 
-      <img src="{{ url_for('static', filename='images/AlexPhoto.png') }}" alt="Alex">
+      <img src="{{ url_for('static', filename='images/UI/AlexPhoto.png') }}" alt="Alex">
       <div class="img-accent-border"></div>
       </div>
 
@@ -238,36 +238,3 @@
 {% endblock %}
 
 
-{% block scripts %}
-<script>
-  // ── Testimonial carousel ──────────────────────────────
-  const track  = document.getElementById('testimonialsTrack');
-  const dotsEl = document.getElementById('tDots');
-
-  if (track && track.children.length > 0) {
-    const cards = Array.from(track.children);
-    let current = 0;
-
-    cards.forEach((_, i) => {
-      const d = document.createElement('div');
-      d.className = 't-dot' + (i === 0 ? ' active' : '');
-      d.dataset.idx = i;
-      d.addEventListener('click', () => goTo(i));
-      dotsEl.appendChild(d);
-    });
-
-    function goTo(idx) {
-      current = (idx + cards.length) % cards.length;
-      track.style.transform = `translateX(-${current * 100}%)`;
-      dotsEl.querySelectorAll('.t-dot').forEach((d, i) =>
-        d.classList.toggle('active', i === current)
-      );
-    }
-
-    document.getElementById('tNext').addEventListener('click', () => goTo(current + 1));
-    document.getElementById('tPrev').addEventListener('click', () => goTo(current - 1));
-
-    setInterval(() => goTo(current + 1), 5000);
-  }
-</script>
-{% endblock %}
