@@ -1,10 +1,315 @@
 {% extends "base.html" %}
+{% block title %}Programs — MiloFitness{% endblock %}
+
 {% block content %}
-<section class="section" style="min-height:60vh; padding-top:calc(var(--nav-h) + 60px);">
-  <div class="container" style="text-align:center;">
-    <p class="section-eyebrow">Coming Soon</p>
-    <h2 class="section-title">This Page</h2>
-    <p style="color:var(--grey);margin-top:20px;">Under construction — check back soon.</p>
+
+<!-- ========== PROGRAMS HERO ========== -->
+<section class="journey-hero">
+  <div class="journey-hero__bg"></div>
+  <div class="journey-hero__overlay"></div>
+  <div class="container journey-hero__content">
+    <p class="section-eyebrow">What You Get</p>
+    <h1 class="journey-hero__title">
+      <span class="title-line title-line--white">PROGRAMS</span>
+      <span class="title-line title-line--accent">BUILT FOR YOU</span>
+    </h1>
+    <p class="journey-hero__sub">No templates. No guesswork. Every program Alex writes is built around one person — you.</p>
   </div>
 </section>
+ <!-- Scroll hint -->
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
+
+<!-- ========== 01 · 1-on-1 Personal Training ========== -->
+<section class="section">
+  <div class="container">
+
+    <div id="personal-training" class="service-block">
+
+      <div class="block-label fade-up">
+        <span class="block-num">01</span>
+        <span class="section-eyebrow eyebrow-tag">In Person</span>
+      </div>
+
+      <div class="about-teaser__grid" style="align-items:start;">
+
+        <div class="about-teaser__text fade-up" style="transition-delay: 0.15s;">
+          <p class="section-eyebrow">Face To Face</p>
+          <h2 class="section-title">1-on-1 Personal Training</h2>
+          <p class="about-teaser__desc">
+            Train directly with Alex at Plus Fitness, Sydney. Every session is built around your body, your goals and your current level — no generic programs, no wasted sets. Alex coaches you through every rep, tracks your progress week by week, and adjusts the plan as you improve.
+          </p>
+
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-icon">🏋️</span>
+              <div>
+                <strong class="feature-item__title">Custom Gym Workouts</strong>
+                <p class="feature-item__desc">Fully individualised training blocks. Strength, hypertrophy, or conditioning — built for your goals.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">🥗</span>
+              <div>
+                <strong class="feature-item__title">Personalised Meal Plans</strong>
+                <p class="feature-item__desc">Nutrition that fits your lifestyle. Calorie targets, macros, and meal timing — all mapped to your training.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">📋</span>
+              <div>
+                <strong class="feature-item__title">In-Gym Guidance</strong>
+                <p class="feature-item__desc">Alex walks you through every movement. Form, technique, breathing — all covered so you train safely and effectively.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">📈</span>
+              <div>
+                <strong class="feature-item__title">Goal Tracking</strong>
+                <p class="feature-item__desc">Regular assessments and progress checks. You'll always know exactly where you are and what comes next.</p>
+              </div>
+            </li>
+          </ul>
+
+          <a href="#contact" class="btn btn--primary">Book a Session</a>
+        </div>
+
+        <div class="about-teaser__img-wrap fade-up" style="transition-delay: 0.3s;">
+          <div class="program-card card--flush">
+            <div class="card-section card-section--border">
+              <span class="section-eyebrow">Included</span>
+              <h3 class="card-heading">What you get</h3>
+            </div>
+            <ul class="contact-details card-section card-section--border">
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> In-person sessions with Alex</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Custom workout program</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Personalised meal plan</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Form &amp; technique coaching</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Weekly progress check-ins</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Goal milestone tracking</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Program adjustments every 4 weeks</li>
+            </ul>
+            <div class="card-section">
+              <p class="card-cta-label">Ready to start?</p>
+              <a href="#contact" class="btn btn--primary btn--full">Enquire Now</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /personal-training -->
+
+    <div class="section-divider"></div>
+
+    <!-- ========== 02 · Online Coaching ========== -->
+    <div id="online-coaching" class="service-block">
+
+      <div class="block-label fade-up">
+        <span class="block-num">02</span>
+        <span class="section-eyebrow eyebrow-tag">Remote</span>
+      </div>
+
+      <div class="about-teaser__grid" style="align-items:start;">
+
+        <div class="about-teaser__img-wrap fade-up" style="transition-delay: 0.15s;">
+          <div class="program-card program-card--featured card--flush">
+            <div class="program-card__badge">Most Popular</div>
+            <div class="card-section card-section--border">
+              <span class="section-eyebrow">Online</span>
+              <h3 class="card-heading">Full remote support</h3>
+            </div>
+            <ul class="contact-details card-section card-section--border">
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Custom training program</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Nutrition &amp; macro guidance</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Weekly video check-ins</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Direct messaging with Alex</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Progress photo reviews</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Program updated monthly</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Available anywhere in Australia</li>
+            </ul>
+            <div class="card-section">
+              <p class="card-cta-label">Train from anywhere</p>
+              <a href="#contact" class="btn btn--primary btn--full">Get Started</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-teaser__text fade-up" style="transition-delay: 0.3s;">
+          <p class="section-eyebrow">Train Anywhere</p>
+          <h2 class="section-title">Online Coaching</h2>
+          <p class="about-teaser__desc">
+            Can't make it in person? No problem. Alex's online coaching gives you everything except the physical presence — a fully custom program, direct access to Alex, weekly check-ins, and nutrition guidance all delivered remotely. Train at your own gym, your home, or wherever works for you.
+          </p>
+
+          <ul class="feature-list">
+            <li class="feature-item">
+              <span class="feature-icon">📲</span>
+              <div>
+                <strong class="feature-item__title">Full Custom Program</strong>
+                <p class="feature-item__desc">A tailored training program written for your equipment, schedule, and goals. Updated monthly as you progress.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">🥩</span>
+              <div>
+                <strong class="feature-item__title">Nutrition Guidance</strong>
+                <p class="feature-item__desc">Macro targets, meal timing and food strategies — all aligned with your training for maximum results.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">📞</span>
+              <div>
+                <strong class="feature-item__title">Weekly Check-ins</strong>
+                <p class="feature-item__desc">Regular video calls with Alex to review progress, answer questions, and keep you on track.</p>
+              </div>
+            </li>
+            <li class="feature-item">
+              <span class="feature-icon">💬</span>
+              <div>
+                <strong class="feature-item__title">Direct Access to Alex</strong>
+                <p class="feature-item__desc">Message Alex anytime between sessions. No waiting, no generic bot — real answers from your coach.</p>
+              </div>
+            </li>
+          </ul>
+
+          <a href="#contact" class="btn btn--primary">Start Online Coaching</a>
+        </div>
+
+      </div>
+    </div><!-- /online-coaching -->
+
+  </div>
+</section>
+
+
+<!-- ========== WHY MILO STRIP ========== -->
+<section class="section section--dark">
+  <div class="container">
+    <div class="section-header fade-up">
+      <p class="section-eyebrow">Why MiloFitness</p>
+      <h2 class="section-title">The Difference Is In The Detail</h2>
+    </div>
+    <div class="socials-grid">
+      <div class="program-card fade-up" style="transition-delay: 0.1s;">
+        <div class="program-card__icon">🎯</div>
+        <h3>Goal-First Approach</h3>
+        <p>Every program starts with your goal. Whether it's fat loss, muscle gain or performance — the plan is built backwards from your target.</p>
+      </div>
+      <div class="program-card fade-up" style="transition-delay: 0.2s;">
+        <div class="program-card__icon">🔄</div>
+        <h3>Constantly Evolving</h3>
+        <p>Alex adjusts your program every 4 weeks. Your body adapts — your plan needs to as well. No program stays the same forever.</p>
+      </div>
+      <div class="program-card fade-up" style="transition-delay: 0.3s;">
+        <div class="program-card__icon">📊</div>
+        <h3>Data Driven</h3>
+        <p>Progress photos, measurements, strength numbers. Alex tracks everything so you can see exactly how far you've come.</p>
+      </div>
+      <div class="program-card fade-up" style="transition-delay: 0.4s;">
+        <div class="program-card__icon">🏆</div>
+        <h3>Proven Results</h3>
+        <p>Alex has walked the walk. A competitive bodybuilder and certified PT who has coached hundreds of clients to their best shape.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== CONTACT ========== -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="section-header fade-up">
+      <p class="section-eyebrow">Get Started</p>
+      <h2 class="section-title">Ready To Train?</h2>
+    </div>
+
+    <div class="contact-grid">
+
+      <div class="contact-text fade-up" style="transition-delay: 0.15s;">
+        <p>Drop your details below and Alex will personally reach out to discuss how MiloFitness can help you hit your goals.</p>
+
+        <ul class="contact-details contact-details--spaced">
+          <li class="contact-item">
+            <span class="contact-item__icon">📍</span>
+            <div>
+              <strong class="contact-item__label">Location</strong>
+              <span>Plus Fitness 24/7 Glenmore Park Gym, L04/11 Town Terrace, Glenmore Park NSW 2745</span>
+            </div>
+          </li>
+          <li class="contact-item">
+            <span class="contact-item__icon">📞</span>
+            <div>
+              <strong class="contact-item__label">Phone</strong>
+              <span>0434 702 672</span>
+            </div>
+          </li>
+          <li class="contact-item">
+            <span class="contact-item__icon">📲</span>
+            <div>
+              <strong class="contact-item__label">Instagram</strong>
+              <span>Available via DM on Instagram</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="follow-row">
+          <p class="contact-item__label">Follow Alex</p>
+          <div class="follow-btns">
+            <a href="https://instagram.com/milofitness" target="_blank" class="btn btn--ghost btn--sm">Instagram</a>
+            <a href="https://tiktok.com/@milofitness" target="_blank" class="btn btn--ghost btn--sm">TikTok</a>
+            <a href="https://youtube.com/milofitness" target="_blank" class="btn btn--ghost btn--sm">YouTube</a>
+          </div>
+        </div>
+      </div>
+
+      <form class="contact-form fade-up" style="transition-delay: 0.3s;" action="/contact" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="program">Interested In</label>
+          <select id="program" name="program" class="form-select">
+            <option value="">Select a program...</option>
+            <option value="personal">1-on-1 Personal Training</option>
+            <option value="online">Online Coaching</option>
+            <option value="unsure">Not sure yet</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="5" placeholder="Tell Alex about your goals..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full">Send Message</button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
 {% endblock %}
