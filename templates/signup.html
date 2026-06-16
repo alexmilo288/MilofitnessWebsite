@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}MiloFitness – Create Account{% endblock %}
+
+{% block content %}
+<section class="login-hero">
+  <div class="login-hero__bg"></div>
+  <div class="login-hero__overlay"></div>
+
+  <div class="container login-hero__content">
+
+    <div class="login-hero__top">
+      <p class="hero-eyebrow">Join MiloFitness</p>
+      <h1 class="login-hero__title">
+        <span class="title-line title-line--white">CREATE</span>
+        <span class="title-line title-line--accent">ACCOUNT.</span>
+      </h1>
+      <p class="hero-tagline">Start your transformation today.</p>
+    </div>
+
+    <div class="login-card">
+      <div class="login-card__header">
+        <p class="section-eyebrow">Member Portal</p>
+        <h2 class="login-card__title">Sign Up for Free</h2>
+      </div>
+
+      {% if error %}
+      <div class="form-error">{{ error }}</div>
+      {% endif %}
+
+      <form class="contact-form login-card__form" method="POST" action="{{ url_for('signup') }}" id="signupForm" novalidate>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="johndoe" required minlength="3">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          <small id="emailHint" class="field-hint">Must be a valid email address</small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
+
+          <ul id="pwChecklist" class="pw-checklist">
+            <li data-rule="length" class="pw-checklist__item">At least 8 characters</li>
+            <li data-rule="upper" class="pw-checklist__item">One uppercase letter</li>
+            <li data-rule="lower" class="pw-checklist__item">One lowercase letter</li>
+            <li data-rule="number" class="pw-checklist__item">One number</li>
+            <li data-rule="special" class="pw-checklist__item">One special character (!@#$% etc.)</li>
+          </ul>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full" id="submitBtn">Create Account</button>
+
+        <div class="login-divider">
+          <span></span>
+          <p>Already have an account?</p>
+          <span></span>
+        </div>
+
+        <a href="{{ url_for('login') }}" class="btn btn--ghost btn--full">Sign In</a>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/signup-validation.js') }}"></script>
+{% endblock %}

@@ -17,6 +17,17 @@ conn.execute('''
     )
 ''')
 
+conn.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        is_verified INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+''')
+
 testimonials = [
     ('Jake R.', 5, 'Alex completely transformed how I train. Down 12kg in 3 months.', None, None),
     ('Sarah M.', 5, 'Best investment I have made. The online coaching is next level.', None, None),
@@ -24,9 +35,10 @@ testimonials = [
 ]
 
 conn.executemany(
-    'INSERT INTO testimonials (name, rating, text, before_image, after_image) VALUES (?,?,?,?,?)',
+    'INSERT OR IGNORE INTO testimonials (name, rating, text, before_image, after_image) VALUES (?,?,?,?,?)',
     testimonials
 )
+
 conn.commit()
 conn.close()
-print("Done! Testimonials added.")
+print("Done! Users table added.")

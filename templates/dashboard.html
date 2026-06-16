@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}MiloFitness – Dashboard{% endblock %}
+
+{% block content %}
+<section class="section" style="min-height:100vh;padding-top:calc(var(--nav-h) + 60px);">
+  <div class="container">
+
+    <div style="margin-bottom:48px;">
+      <p class="section-eyebrow">Member Area</p>
+      <h1 class="section-title" style="text-align:left;">
+        Welcome, <span class="accent">{{ username }}</span>
+      </h1>
+    </div>
+
+    <div class="programs-grid">
+      <div class="program-card">
+        <div class="program-card__icon">📋</div>
+        <h3>My Program</h3>
+        <p>View your current training program and track your sessions.</p>
+        <a href="#" class="card-link">View Program →</a>
+      </div>
+
+      <div class="program-card program-card--featured">
+        <div class="program-card__icon">📈</div>
+        <h3>My Progress</h3>
+        <p>Check in on your stats, measurements and transformation photos.</p>
+        <a href="#" class="card-link">View Progress →</a>
+      </div>
+
+      <div class="program-card">
+        <div class="program-card__icon">💬</div>
+        <h3>Message Alex</h3>
+        <p>Got a question? Send Alex a message directly from your dashboard.</p>
+        <a href="#" class="card-link">Send Message →</a>
+      </div>
+    </div>
+
+    <div style="margin-top:60px;">
+      <a href="{{ url_for('logout') }}" class="btn btn--ghost">Log Out</a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

@@ -58,27 +58,13 @@ if (track && prevBtn && nextBtn) {
 }
 
 /* ----------------------------------------------------------
-   FADE-IN ON SCROLL
+   FADE-IN ON SCROLL (global — for home page cards etc.)
 ---------------------------------------------------------- */
-const fadeStyle = document.createElement('style');
-fadeStyle.textContent = `
-  .fade-up {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-document.head.appendChild(fadeStyle);
-
-const fadeObserver = new IntersectionObserver((entries) => {
+const fadeObserverGlobal = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('visible');
-      fadeObserver.unobserve(entry.target);
+      fadeObserverGlobal.unobserve(entry.target);
     }
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
@@ -86,9 +72,24 @@ const fadeObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll(
   '.program-card, .social-card, .stat-item, .testimonial-card, .about-teaser__text'
 ).forEach((el, i) => {
-  el.classList.add('fade-up');
   el.style.transitionDelay = `${(i % 4) * 0.08}s`;
-  fadeObserver.observe(el);
+  fadeObserverGlobal.observe(el);
+});
+
+/* ----------------------------------------------------------
+   FADE-IN ON SCROLL (journey page sections)
+---------------------------------------------------------- */
+const fadeObserverSections = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserverSections.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.fade-up').forEach(el => {
+  fadeObserverSections.observe(el);
 });
 
 /* ----------------------------------------------------------
@@ -143,14 +144,12 @@ document.body.appendChild(cursorDot);
 
 let mouseX = 0, mouseY = 0;
 let glowX = 0, glowY = 0;
-let glowAnimating = false;
 
 function animateGlow() {
   glowX += (mouseX - glowX) * 0.15;
   glowY += (mouseY - glowY) * 0.15;
   cursorGlow.style.left = glowX + 'px';
   cursorGlow.style.top  = glowY + 'px';
-  glowAnimating = true;
   requestAnimationFrame(animateGlow);
 }
 animateGlow();
@@ -191,10 +190,9 @@ document.addEventListener('mouseenter', () => {
 });
 
 /* ============================================================
-   ABOUT / JOURNEY PAGE
+   JOURNEY / ABOUT PAGE
    Only runs if the journey slider exists on this page
    ============================================================ */
-
 (function initJourneyPage() {
 
   const slider = document.getElementById('journeySlider');
@@ -214,7 +212,6 @@ document.addEventListener('mouseenter', () => {
         { val: '0',                   label: 'Gym Sessions'  },
         { val: 'Day 1',               label: 'The Decision'  },
       ],
-      weight: 60, bf: 18,
     },
     {
       phase: 'Chapter 02',
@@ -226,7 +223,6 @@ document.addEventListener('mouseenter', () => {
         { val: '500+',                label: 'Sessions Logged'  },
         { val: '2021',                label: 'PT Certified'     },
       ],
-      weight: 82, bf: 12,
     },
     {
       phase: 'Chapter 03',
@@ -234,156 +230,53 @@ document.addEventListener('mouseenter', () => {
       quote: '"Standing on that stage, I realised — this is what I was always meant to do."',
       body:  "In 2023 Milo competed in his first NABBA bodybuilding competition. Months of peak-week nutrition, posing practice, and meticulous programming led to a top-5 finish in Men's Physique. The experience sharpened every method he now coaches his clients through.",
       stats: [
-        { val: '78<small>kg</small>', label: 'Stage Weight'    },
-        { val: '6<small>%</small>',   label: 'Body Fat'         },
-        { val: 'Top 5',               label: 'NABBA Nationals'  },
+        { val: '..<small>kg</small>', label: 'Stage Weight'    },
+        { val: '..<small>%</small>',   label: 'Body Fat'         },
+        { val: '......',               label: '....'  },
       ],
-      weight: 78, bf: 6,
     },
   ];
 
   /* ----------------------------------------------------------
-     SILHOUETTE PHASE DATA
-  ---------------------------------------------------------- */
-  const phases = [
-    { shoulderW: 72,  chestW: 64,  waistW: 52, hipW: 58, armW: 12, legW: 22, torsoH: 110, waistH: 40, legH: 150 },
-    { shoulderW: 100, chestW: 92,  waistW: 58, hipW: 68, armW: 20, legW: 30, torsoH: 110, waistH: 40, legH: 150 },
-    { shoulderW: 118, chestW: 105, waistW: 54, hipW: 70, armW: 24, legW: 34, torsoH: 110, waistH: 40, legH: 150 },
-  ];
-
-  /* ----------------------------------------------------------
-     HELPERS
-  ---------------------------------------------------------- */
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
-  function lerpPhase(p1, p2, t) {
-    const out = {};
-    for (const key in p1) out[key] = lerp(p1[key], p2[key], t);
-    return out;
-  }
-
-  function buildPoints(p) {
-    const cx       = 150;
-    const torsoTop = 100;
-    const torsoBot = torsoTop + p.torsoH;
-    const waistBot = torsoBot + p.waistH;
-    const legBot   = waistBot + p.legH;
-    const { shoulderW: sh, chestW: ch, waistW: wa, hipW: hi, armW: aw, legW: lw } = p;
-
-    return {
-      torso: [
-        [cx - sh/2, torsoTop], [cx + sh/2, torsoTop],
-        [cx + ch/2, torsoTop + 30], [cx + wa/2, torsoBot],
-        [cx - wa/2, torsoBot], [cx - ch/2, torsoTop + 30],
-      ],
-      armL: [
-        [cx - sh/2, torsoTop + 5], [cx - sh/2 - aw, torsoTop + 5],
-        [cx - sh/2 - aw + 6, torsoBot - 10], [cx - wa/2, torsoBot - 10],
-      ],
-      armR: [
-        [cx + sh/2, torsoTop + 5], [cx + sh/2 + aw, torsoTop + 5],
-        [cx + sh/2 + aw - 6, torsoBot - 10], [cx + wa/2, torsoBot - 10],
-      ],
-      waist: [
-        [cx - wa/2, torsoBot], [cx + wa/2, torsoBot],
-        [cx + hi/2, waistBot], [cx - hi/2, waistBot],
-      ],
-      legL: [
-        [cx - hi/2 + 4, waistBot], [cx - 4, waistBot],
-        [cx - 4, legBot], [cx - hi/2 + 4 - (lw - 22), legBot],
-      ],
-      legR: [
-        [cx + 4, waistBot], [cx + hi/2 - 4, waistBot],
-        [cx + hi/2 - 4 + (lw - 22), legBot], [cx + 4, legBot],
-      ],
-    };
-  }
-
-  function pStr(arr) {
-    return arr.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
-  }
-
-  /* ----------------------------------------------------------
      DOM REFS
   ---------------------------------------------------------- */
-  const phaseLabel   = document.getElementById('phase-label');
-  const badgeWeight  = document.getElementById('badgeWeight');
-  const badgeBf      = document.getElementById('badgeBf');
-  const measureLines = document.getElementById('measure-lines');
-  const svgEl        = document.getElementById('silhouetteSvg');
-  const cardPhase    = document.getElementById('cardPhase');
-  const cardTitle    = document.getElementById('cardTitle');
-  const cardQuote    = document.getElementById('cardQuote');
-  const cardBody     = document.getElementById('cardBody');
-  const cardStats    = document.getElementById('chapterStats');
-  const chapterDots  = document.querySelectorAll('.chapter-dot');
-  const chapterCard  = document.querySelector('.chapter-card');
-
-  const svgParts = {
-    torso:  document.getElementById('s-torso'),
-    torsoO: document.getElementById('s-torso-outline'),
-    armL:   document.getElementById('s-arm-l'),
-    armLO:  document.getElementById('s-arm-l-outline'),
-    armR:   document.getElementById('s-arm-r'),
-    armRO:  document.getElementById('s-arm-r-outline'),
-    waist:  document.getElementById('s-waist'),
-    waistO: document.getElementById('s-waist-outline'),
-    legL:   document.getElementById('s-leg-l'),
-    legLO:  document.getElementById('s-leg-l-outline'),
-    legR:   document.getElementById('s-leg-r'),
-    legRO:  document.getElementById('s-leg-r-outline'),
-  };
+  const cardPhase   = document.getElementById('cardPhase');
+  const cardTitle   = document.getElementById('cardTitle');
+  const cardQuote   = document.getElementById('cardQuote');
+  const cardBody    = document.getElementById('cardBody');
+  const cardStats   = document.getElementById('chapterStats');
+  const chapterCard = document.getElementById('chapterCard');
+  const chapterDots = document.querySelectorAll('.chapter-dot');
+  const photoPhs    = document.querySelectorAll('.photo-ph');
+  const photoThumbs = document.querySelectorAll('.photo-thumb');
 
   /* ----------------------------------------------------------
-     UPDATE SILHOUETTE
+     SWITCH PHOTO PANEL
   ---------------------------------------------------------- */
-  function updateSilhouette(progress) {
-    const t = progress / 100;
+  function switchPhoto(idx) {
+    photoPhs.forEach(ph => ph.classList.remove('active'));
+    photoThumbs.forEach(t => t.classList.remove('active'));
 
-    const phaseIdx = t <= 0.5 ? 0 : 1;
-    const localT   = t <= 0.5 ? t / 0.5 : (t - 0.5) / 0.5;
-    const p        = lerpPhase(phases[phaseIdx], phases[phaseIdx + 1], localT);
-    const pts      = buildPoints(p);
-
-    svgParts.torso.setAttribute('points',  pStr(pts.torso));
-    svgParts.torsoO.setAttribute('points', pStr(pts.torso));
-    svgParts.armL.setAttribute('points',   pStr(pts.armL));
-    svgParts.armLO.setAttribute('points',  pStr(pts.armL));
-    svgParts.armR.setAttribute('points',   pStr(pts.armR));
-    svgParts.armRO.setAttribute('points',  pStr(pts.armR));
-    svgParts.waist.setAttribute('points',  pStr(pts.waist));
-    svgParts.waistO.setAttribute('points', pStr(pts.waist));
-    svgParts.legL.setAttribute('points',   pStr(pts.legL));
-    svgParts.legLO.setAttribute('points',  pStr(pts.legL));
-    svgParts.legR.setAttribute('points',   pStr(pts.legR));
-    svgParts.legRO.setAttribute('points',  pStr(pts.legR));
-
-    phaseLabel.textContent = 'PHASE ' + (t < 0.33 ? 1 : t < 0.66 ? 2 : 3) + ' OF 3';
-    measureLines.style.opacity = t > 0.85 ? ((t - 0.85) / 0.15).toFixed(2) : 0;
-    svgEl.classList.toggle('phase-2', t > 0.66);
-
-    badgeWeight.textContent = Math.round(lerp(chapters[0].weight, chapters[2].weight, t));
-    badgeBf.textContent     = Math.round(lerp(chapters[0].bf,     chapters[2].bf,     t));
-
-    const activeChapter = t < 0.4 ? 0 : t < 0.75 ? 1 : 2;
-    chapterDots.forEach((dot, i) => dot.classList.toggle('active', i === activeChapter));
-    updateChapterCard(activeChapter);
-
-    slider.style.backgroundSize = progress + '% 100%';
+    const ph    = document.querySelector(`.photo-ph[data-chapter="${idx}"]`);
+    const thumb = document.querySelector(`.photo-thumb[data-thumb="${idx}"]`);
+    if (ph)    ph.classList.add('active');
+    if (thumb) thumb.classList.add('active');
   }
 
   /* ----------------------------------------------------------
-     CHAPTER CARD SWAP
+     UPDATE CHAPTER CARD
   ---------------------------------------------------------- */
   let currentChapter = -1;
 
   function updateChapterCard(idx) {
     if (idx === currentChapter) return;
     currentChapter = idx;
+
     const ch = chapters[idx];
 
-    chapterCard.style.opacity   = '0';
-    chapterCard.style.transform = 'translateY(8px)';
+    chapterCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    chapterCard.style.opacity    = '0';
+    chapterCard.style.transform  = 'translateY(8px)';
 
     setTimeout(() => {
       cardPhase.textContent = ch.phase;
@@ -396,28 +289,71 @@ document.addEventListener('mouseenter', () => {
           <span class="cstat__label">${s.label}</span>
         </div>`
       ).join('');
+
       chapterCard.style.opacity   = '1';
       chapterCard.style.transform = 'translateY(0)';
-    }, 180);
+    }, 200);
   }
 
   /* ----------------------------------------------------------
-     SLIDER INPUT
+     UPDATE CHAPTER DOTS
+  ---------------------------------------------------------- */
+  function updateDots(idx) {
+    chapterDots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === idx);
+    });
+  }
+
+  /* ----------------------------------------------------------
+     MASTER UPDATE — called on every slider move
+  ---------------------------------------------------------- */
+  function updateAll(progress) {
+    const t = progress / 100;
+
+    /* Which chapter are we in */
+    const activeChapter = t < 0.4 ? 0 : t < 0.75 ? 1 : 2;
+
+    /* Update slider fill track */
+    slider.style.backgroundSize = progress + '% 100%';
+
+    /* Update all UI */
+    updateDots(activeChapter);
+    updateChapterCard(activeChapter);
+    switchPhoto(activeChapter);
+  }
+
+  /* ----------------------------------------------------------
+     SLIDER INPUT — single source of truth
   ---------------------------------------------------------- */
   slider.addEventListener('input', () => {
-    updateSilhouette(parseInt(slider.value, 10));
+    updateAll(parseInt(slider.value, 10));
   });
 
   /* ----------------------------------------------------------
-     CHAPTER DOT CLICKS — animated jump
+     CHAPTER DOT CLICKS — animated jump to target value
   ---------------------------------------------------------- */
   chapterDots.forEach((dot, i) => {
     dot.addEventListener('click', () => {
-      animateSlider(i === 0 ? 0 : i === 1 ? 50 : 100);
+      const target = i === 0 ? 0 : i === 1 ? 50 : 100;
+      animateSliderTo(target);
     });
   });
 
-  function animateSlider(target) {
+  /* ----------------------------------------------------------
+     THUMBNAIL CLICKS — jump to chapter
+  ---------------------------------------------------------- */
+  photoThumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const idx    = parseInt(thumb.dataset.thumb, 10);
+      const target = idx === 0 ? 0 : idx === 1 ? 50 : 100;
+      animateSliderTo(target);
+    });
+  });
+
+  /* ----------------------------------------------------------
+     ANIMATED SLIDER JUMP
+  ---------------------------------------------------------- */
+  function animateSliderTo(target) {
     const start   = parseInt(slider.value, 10);
     const diff    = target - start;
     const dur     = 600;
@@ -426,10 +362,11 @@ document.addEventListener('mouseenter', () => {
     function step(ts) {
       const elapsed = ts - startTs;
       const prog    = Math.min(elapsed / dur, 1);
+      /* ease in-out quad */
       const ease    = prog < 0.5 ? 2 * prog * prog : -1 + (4 - 2 * prog) * prog;
       const val     = Math.round(start + diff * ease);
       slider.value  = val;
-      updateSilhouette(val);
+      updateAll(val);
       if (prog < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -438,8 +375,7 @@ document.addEventListener('mouseenter', () => {
   /* ----------------------------------------------------------
      SCROLL-IN TIMELINE CARDS
   ---------------------------------------------------------- */
-  const timelineCards = document.querySelectorAll('.timeline-card');
-
+  const timelineCards    = document.querySelectorAll('.timeline-card');
   const timelineObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -451,9 +387,76 @@ document.addEventListener('mouseenter', () => {
 
   timelineCards.forEach(card => timelineObserver.observe(card));
 
+  
   /* ----------------------------------------------------------
-     INIT
+     INIT — set everything to chapter 0 state
   ---------------------------------------------------------- */
-  updateSilhouette(0);
+  updateAll(0);
 
 })();
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  const emailInput    = document.getElementById('email');
+  const emailHint     = document.getElementById('emailHint');
+  const passwordInput = document.getElementById('password');
+  const checklist      = document.getElementById('pwChecklist');
+  const usernameInput  = document.getElementById('username');
+  const form           = document.getElementById('signupForm');
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const rules = {
+    length:  pw => pw.length >= 8,
+    upper:   pw => /[A-Z]/.test(pw),
+    lower:   pw => /[a-z]/.test(pw),
+    number:  pw => /[0-9]/.test(pw),
+    special: pw => /[!@#$%^&*(),.?":{}|<>]/.test(pw)
+  };
+
+  function validatePassword() {
+    const pw = passwordInput.value;
+    let allValid = true;
+
+    Object.keys(rules).forEach(function (key) {
+      const li = checklist.querySelector('[data-rule="' + key + '"]');
+      const passed = rules[key](pw);
+      li.classList.toggle('pw-checklist__item--valid', passed);
+      if (!passed) allValid = false;
+    });
+
+    return allValid;
+  }
+
+  function validateEmail() {
+    const value = emailInput.value.trim();
+    const valid = emailRegex.test(value);
+
+    emailHint.classList.remove('field-hint--valid', 'field-hint--invalid');
+
+    if (value.length === 0) {
+      emailHint.textContent = 'Must be a valid email address';
+    } else if (valid) {
+      emailHint.textContent = 'Looks good';
+      emailHint.classList.add('field-hint--valid');
+    } else {
+      emailHint.textContent = 'Enter a valid email address (e.g. name@example.com)';
+      emailHint.classList.add('field-hint--invalid');
+    }
+
+    return valid;
+  }
+
+  passwordInput.addEventListener('input', validatePassword);
+  emailInput.addEventListener('input', validateEmail);
+
+  form.addEventListener('submit', function (e) {
+    const pwValid = validatePassword();
+    const emailValid = validateEmail();
+    const usernameValid = usernameInput.value.trim().length >= 3;
+
+    if (!pwValid || !emailValid || !usernameValid) {
+      e.preventDefault();
+    }
+  });
+});

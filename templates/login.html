@@ -1,10 +1,55 @@
 {% extends "base.html" %}
+{% block title %}MiloFitness – Sign In{% endblock %}
+
 {% block content %}
-<section class="section" style="min-height:60vh; padding-top:calc(var(--nav-h) + 60px);">
-  <div class="container" style="text-align:center;">
-    <p class="section-eyebrow">Coming Soon</p>
-    <h2 class="section-title">This Page</h2>
-    <p style="color:var(--grey);margin-top:20px;">Under construction — check back soon.</p>
+
+<section class="login-hero">
+  <div class="login-hero__bg"></div>
+  <div class="login-hero__overlay"></div>
+
+  <div class="container login-hero__content">
+
+  
+
+    <div class="login-card">
+
+      <div class="login-card__header">
+        <p class="section-eyebrow">Member Portal</p>
+        <h2 class="login-card__title">Sign In to Your Account</h2>
+      </div>
+
+      <form class="contact-form login-card__form" method="POST" action="{{ url_for('login') }}">
+        {{ form.hidden_tag() if form }}
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <div class="login-card__meta">
+          <a href="#" class="login-forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+
+        <div class="login-divider">
+          <span></span>
+          <p>New to MiloFitness?</p>
+          <span></span>
+        </div>
+
+        <a href="/signup" class="btn btn--ghost btn--full">Create an Account</a>
+
+      </form>
+
+    </div>
+
   </div>
 </section>
+
 {% endblock %}

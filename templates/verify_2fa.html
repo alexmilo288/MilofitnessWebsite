@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}MiloFitness – Verify{% endblock %}
+
+{% block content %}
+<section class="login-hero">
+  <div class="login-hero__bg"></div>
+  <div class="login-hero__overlay"></div>
+
+  <div class="container login-hero__content">
+
+    <div class="login-hero__top">
+      <p class="hero-eyebrow">Security Check</p>
+      <h1 class="login-hero__title">
+        <span class="title-line title-line--white">CHECK</span>
+        <span class="title-line title-line--accent">EMAIL.</span>
+      </h1>
+      <p class="hero-tagline">We sent a 6-digit code to your inbox.</p>
+    </div>
+
+    <div class="login-card">
+      <div class="login-card__header">
+        <p class="section-eyebrow">Two-Factor Authentication</p>
+        <h2 class="login-card__title">Enter Your Code</h2>
+      </div>
+
+      {% if error %}
+      <div style="margin:16px 52px 0;padding:14px 18px;
+                  background:rgba(255,59,48,0.1);border:1px solid rgba(255,59,48,0.3);
+                  border-radius:var(--radius);font-family:var(--font-cond);
+                  font-size:14px;letter-spacing:1px;color:#ff3b30;">
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <form class="contact-form login-card__form" method="POST" action="{{ url_for('verify_2fa') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="form-group">
+          <label for="code">6-Digit Code</label>
+          <input type="text" id="code" name="code" placeholder="000000"
+                 maxlength="6" autocomplete="one-time-code"
+                 style="font-size:1.8rem;letter-spacing:8px;text-align:center;" required>
+        </div>
+
+        <p style="color:var(--grey);font-size:13px;font-family:var(--font-cond);
+                  letter-spacing:1px;text-align:center;margin-top:-8px;">
+          Code expires in 10 minutes
+        </p>
+
+        <button type="submit" class="btn btn--primary btn--full">Verify</button>
+
+        <div class="login-divider">
+          <span></span>
+          <p>Wrong account?</p>
+          <span></span>
+        </div>
+
+        <a href="{{ url_for('login') }}" class="btn btn--ghost btn--full">Back to Login</a>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
