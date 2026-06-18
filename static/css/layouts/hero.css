@@ -1,0 +1,143 @@
+/* ============================================================
+   MILOFITNESS — Hero Section (Homepage)
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/static/images/UI/BG_home1.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.1) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+  padding-top: var(--nav-h);
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.9s ease both;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-cond);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+  animation: fadeUp 0.9s 0.1s ease both;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--blue);
+}
+
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 16vw, 14rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.title-line {
+  display: block;
+  animation: fadeUp 0.9s ease both;
+}
+.title-line--white {
+  color: var(--white);
+  animation-delay: 0.15s;
+}
+.title-line--accent {
+  color: var(--blue);
+  animation-delay: 0.25s;
+}
+
+.hero-tagline {
+  font-family: var(--font-cond);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 40px;
+  animation: fadeUp 0.9s 0.35s ease both;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeUp 0.9s 0.45s ease both;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: var(--font-cond);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  animation: fadeUp 1s 1.2s ease both;
+}
+.scroll-line {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+@keyframes scrollPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}

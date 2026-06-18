@@ -11,6 +11,7 @@ import bleach
 import re
 import user_management as db
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'database', 'milofitness.db')
 
@@ -76,19 +77,20 @@ def home():
     return render_template('1home.html', testimonials=testimonials)
 
 
-@app.route('/about')
+@app.route('/2about')
 def about():
-    return render_template('about.html')
+    return render_template('2about.html')
 
 
-@app.route('/programs')
+@app.route('/3programs')
 def programs():
-    return render_template('programs.html')
+    status = request.args.get('status')
+    return render_template('3programs.html', status=status)
 
 
-@app.route('/merch')
+@app.route('/4merch')
 def merch():
-    return render_template('merch.html')
+    return render_template('4merch.html')
 
 
 @app.route('/timetable')
@@ -96,8 +98,24 @@ def timetable():
     return render_template('timetable.html')
 
 
+@app.route('/contact', methods=['POST'])
+def contact():
+    name    = sanitize(request.form.get('name', ''))
+    email   = sanitize(request.form.get('email', ''))
+    program = sanitize(request.form.get('program', ''))
+    message = sanitize(request.form.get('message', ''))
+
+    try:
+        email_utils.send_contact_email(name, email, program, message)
+        status = 'success'
+    except Exception as e:
+        print(f"Email error: {e}")  
+        status = 'error'
+
+    return redirect(url_for('programs', status=status))
+
 # ── Login ──────────────────────────────────────────────────
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/6login', methods=['GET', 'POST'])
 def login():
     if 'user' in session:
         return redirect(url_for('dashboard'))
@@ -123,14 +141,14 @@ def login():
         else:
             error = 'Invalid username or password.'
 
-    return render_template('login.html', error=error)
+    return render_template('6login.html', error=error)
 
 
 # ── Signup ─────────────────────────────────────────────────
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/7signup', methods=['GET', 'POST'])
 def signup():
     if 'user' in session:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('5client_dashboard'))
 
     error = None
     if request.method == 'POST':
@@ -139,33 +157,42 @@ def signup():
         password = sanitize(request.form.get('password', ''))
 
         error = check_password_strength(password)
+
+        if not error and db.username_or_email_exists(username, email):
+            error = 'Username or email already exists.'
+
         if not error:
             hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-            success = db.insert_user(username, email, hashed)
+            code = email_utils.generate_code()
 
-            if not success:
-                error = 'Username or email already exists.'
-            else:
-                user = db.get_user_by_username(username)
-                code = email_utils.generate_code()
-                session['2fa_code'] = code
-                session['2fa_expires'] = (datetime.utcnow() + timedelta(minutes=10)).isoformat()
-                session['2fa_user_id'] = user['id']
-                session['2fa_username'] = user['username']
+            # Stage the signup — nothing is written to the DB yet
+            session['pending_signup'] = {
+                'username': username,
+                'email': email,
+                'password': hashed
+            }
+            session['2fa_code'] = code
+            session['2fa_expires'] = (datetime.utcnow() + timedelta(minutes=10)).isoformat()
 
-                try:
-                    email_utils.send_verification_email(email, code, username)
-                    return redirect(url_for('verify_2fa'))
-                except Exception:
-                    error = 'Account created but could not send email. Try logging in.'
+            try:
+                email_utils.send_verification_email(email, code, username)
+                return redirect(url_for('verify_2fa'))
+            except Exception:
+                session.pop('pending_signup', None)
+                session.pop('2fa_code', None)
+                session.pop('2fa_expires', None)
+                error = 'Could not send verification email. Try again.'
 
-    return render_template('signup.html', error=error)
+    return render_template('7signup.html', error=error)
+
+
+
 
 
 # ── 2FA ────────────────────────────────────────────────────
-@app.route('/verify', methods=['GET', 'POST'])
+@app.route('/verify_2fa', methods=['GET', 'POST'])
 def verify_2fa():
-    if '2fa_user_id' not in session:
+    if '2fa_code' not in session:
         return redirect(url_for('login'))
 
     error = None
@@ -178,26 +205,43 @@ def verify_2fa():
             return redirect(url_for('login'))
 
         if entered == session.get('2fa_code'):
-            user_id  = session.pop('2fa_user_id')
-            username = session.pop('2fa_username')
             session.pop('2fa_code', None)
             session.pop('2fa_expires', None)
-            db.set_verified(user_id)
-            session.permanent = True
-            session['user'] = username
-            session['user_id'] = user_id
-            return redirect(url_for('dashboard'))
+
+            pending = session.pop('pending_signup', None)
+
+            if pending:
+                # Signup flow: create the user now that they're verified
+                success = db.insert_user(pending['username'], pending['email'], pending['password'])
+                if not success:
+                    error = 'Username or email already exists.'
+                    return render_template('verify_2fa.html', error=error)
+
+                user = db.get_user_by_username(pending['username'])
+                db.set_verified(user['id'])
+                session.permanent = True
+                session['user'] = user['username']
+                session['user_id'] = user['id']
+            else:
+                # Login flow: user already exists, just finish logging them in
+                user_id  = session.pop('2fa_user_id')
+                username = session.pop('2fa_username')
+                db.set_verified(user_id)
+                session.permanent = True
+                session['user'] = username
+                session['user_id'] = user_id
+
+            return redirect(url_for('5client_dashboard'))
         else:
             error = 'Incorrect code. Please try again.'
 
-    return render_template('verify_2fa.html', error=error)
-
+    return render_template('8verify_2fa.html', error=error)
 
 # ── Dashboard ──────────────────────────────────────────────
-@app.route('/dashboard')
+@app.route('/client_dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', username=session['user'])
+    return render_template('5client_dashboard.html', username=session['user'])
 
 
 # ── Logout ─────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "0base.html" %}
 {% block title %}Programs — MiloFitness{% endblock %}
 
 {% block content %}
@@ -87,7 +87,7 @@
               <li class="checklist-item"><span class="accent checklist-tick">✓</span> In-person sessions with Alex</li>
               <li class="checklist-item"><span class="accent checklist-tick">✓</span> Custom workout program</li>
               <li class="checklist-item"><span class="accent checklist-tick">✓</span> Personalised meal plan</li>
-              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Form &amp; technique coaching</li>
+              <li class="checklist-item"><span class="accent checklist-tick">✓</span> Form & technique coaching</li>
               <li class="checklist-item"><span class="accent checklist-tick">✓</span> Weekly progress check-ins</li>
               <li class="checklist-item"><span class="accent checklist-tick">✓</span> Goal milestone tracking</li>
               <li class="checklist-item"><span class="accent checklist-tick">✓</span> Program adjustments every 4 weeks</li>
@@ -265,7 +265,14 @@
         </div>
       </div>
 
+      {% if request.args.get('status') == 'success' %}
+      <div class="toast toast--success" id="toast">✓ Message sent — Alex will be in touch soon.</div>
+      {% elif request.args.get('status') == 'error' %}
+      <div class="toast toast--error" id="toast">✗ Something went wrong. Try again or DM Alex on Instagram.</div>
+      {% endif %}
+
       <form class="contact-form fade-up" style="transition-delay: 0.3s;" action="/contact" method="POST">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-row">
           <div class="form-group">
             <label for="name">Full Name</label>

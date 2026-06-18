@@ -1,0 +1,84 @@
+/* ============================================================
+   MILOFITNESS — Utilities
+   ============================================================ */
+
+/* Container */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Sections */
+.section {
+  padding: 100px 0;
+}
+.section--dark {
+  background: var(--dark-2);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* Typography utilities */
+.accent {
+  color: var(--blue);
+}
+
+.section-eyebrow {
+  font-family: var(--font-cond);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--white);
+}
+
+/* Animations */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .fade-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

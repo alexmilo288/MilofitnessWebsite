@@ -1,0 +1,194 @@
+{% extends "0base.html" %}
+{% block content %}
+
+
+
+<!-- ============================================================
+     MERCH HERO
+     ============================================================ -->
+<section class="merch-hero section">
+  <div class="container">
+
+    <div class="merch-hero__grid">
+
+      <!-- LEFT — Product images -->
+      <div class="merch-hero__images">
+
+        <!-- Main image -->
+        <div class="merch-main-img img-placeholder">
+          <img id="merch-main-photo" src="{{ url_for('static', filename='images/UI/hoodie_front.png') }}" alt="MiloFitness Hoodie">
+          <div class="img-accent-border"></div>
+        </div>
+
+        <!-- Thumbnail row -->
+        <div class="merch-thumbs">
+          <div class="merch-thumb merch-thumb--active img-placeholder" data-img="{{ url_for('static', filename='images/merch/hoodie_front.png') }}">
+            <img src="{{ url_for('static', filename='images/UI/hoodie_front.png') }}" alt="Front">
+          </div>
+          <div class="merch-thumb img-placeholder" data-img="{{ url_for('static', filename='images/UI/hoodie_back.png') }}">
+            <img src="{{ url_for('static', filename='images/UI/hoodie_back.png') }}" alt="Back">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT — Product info -->
+      <div class="merch-hero__info">
+
+        <p class="section-eyebrow">Limited Drop</p>
+
+        <h1 class="merch-title">
+          The Milo<br><span class="accent">Hoodie</span>
+        </h1>
+
+        <p class="merch-description">
+          Heavyweight 450gsm fleece. Oversized fit, dropped shoulders, embroidered chest logo. 
+          Built for the gym and the commute.
+        </p>
+
+        <!-- Specs row -->
+        <div class="merch-specs">
+          <div class="merch-spec">
+            <span class="merch-spec__label">Material</span>
+            <span class="merch-spec__val">450gsm Cotton Fleece</span>
+          </div>
+          <div class="merch-spec">
+            <span class="merch-spec__label">Fit</span>
+            <span class="merch-spec__val">Oversized</span>
+          </div>
+          <div class="merch-spec">
+            <span class="merch-spec__label">Colours</span>
+            <span class="merch-spec__val">Black / Aquamarine</span>
+          </div>
+        </div>
+
+        <!-- Size selector -->
+        <div class="merch-size-selector">
+          <p class="merch-size-label">Select Size</p>
+          <div class="merch-sizes">
+            <button class="merch-size-btn" type="button">S</button>
+            <button class="merch-size-btn merch-size-btn--active" type="button">M</button>
+            <button class="merch-size-btn" type="button">L</button>
+            <button class="merch-size-btn" type="button">XL</button>
+          </div>
+        </div>
+
+        <!-- Price + CTA -->
+        <div class="merch-purchase">
+          <div>
+            <span class="merch-price">$80</span>
+            <span class="merch-price-currency">AUD</span>
+          </div>
+          <a href="https://instagram.com/@alexmilo.fit" target="_blank" class="btn btn--primary">
+            Order via DM
+          </a>
+        </div>
+
+        <p class="merch-dm-note">
+          DM <span class="accent">@alexmilo.fit</span> on Instagram to order. Ships within 3–5 business days.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     WORN BY — BUYER COMMUNITY
+     ============================================================ -->
+<section class="section section--dark">
+  <div class="container">
+
+    <div class="section-header">
+      <p class="section-eyebrow">Worn By</p>
+      <h2 class="section-title">The Community</h2>
+    </div>
+
+    <div class="worn-grid">
+
+      <!-- Buyer card 1 -->
+      <div class="worn-card">
+        <div class="worn-card__photo img-placeholder">
+        <img src="{{ url_for('static', filename='images/UI/hoodie_example1.png') }}" alt="Jake T"> 
+          <svg class="worn-card__avatar-icon" width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="6"/><path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12"/></svg>
+        </div>
+        <div class="worn-card__body">
+          <p class="worn-card__quote">"Honestly the best hoodie I own. Thick, warm, and the embroidery looks clean as."</p>
+          <div class="worn-card__meta">
+            <span class="worn-card__name">Group of Clients</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer card 2 -->
+      <div class="worn-card">
+        <div class="worn-card__photo img-placeholder">
+          <img src="{{ url_for('static', filename='images/UI/hoodie_example4.png') }}" alt="Jake T"> 
+          <svg class="worn-card__avatar-icon" width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="6"/><path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12"/></svg>
+        </div>
+        <div class="worn-card__body">
+          <p class="worn-card__quote">"Wore it to every session this winter. People keep asking where it's from."</p>
+          <div class="worn-card__meta">
+            <span class="worn-card__name">Mike.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer card 3 -->
+      <div class="worn-card">
+        <div class="worn-card__photo img-placeholder">
+          <img src="{{ url_for('static', filename='images/UI/hoodie_example3.png') }}" alt="Chris V"> 
+          <svg class="worn-card__avatar-icon" width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="12" r="6"/><path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12"/></svg>
+        </div>
+        <div class="worn-card__body">
+          <p class="worn-card__quote">"Sizing is perfect for an oversized fit. Got the XL and it's exactly what I wanted."</p>
+          <div class="worn-card__meta">
+            <span class="worn-card__name">Group of Clients</span>
+            <span class="worn-card__tag">@chrisvfit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buyer card 4 -->
+      <div class="worn-card">
+        <div class="worn-card__photo img-placeholder">
+          <img src="{{ url_for('static', filename='images/UI/hoodie_example2.png') }}" alt="Jake T"> 
+        </div>
+        <div class="worn-card__body">
+          <p class="worn-card__quote">"Bought one for me and one for my training partner. Quality speaks for itself."</p>
+          <div class="worn-card__meta">
+            <span class="worn-card__name">Sam B.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Tag CTA -->
+    <div class="merch-tag-cta">
+      <p class="merch-tag-cta__label">
+        Got yours? Tag <span class="accent">@alexmilo.fit</span> to be featured
+      </p>
+      <a href="https://instagram.com/@alexmilo.fit" target="_blank" class="btn btn--ghost">
+        Show us on Instagram
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Click a thumbnail to swap the main hoodie photo
+  document.querySelectorAll('.merch-thumb').forEach(function (thumb) {
+    thumb.addEventListener('click', function () {
+      document.getElementById('merch-main-photo').src = thumb.dataset.img;
+      document.querySelectorAll('.merch-thumb').forEach(function (t) {
+        t.classList.remove('merch-thumb--active');
+      });
+      thumb.classList.add('merch-thumb--active');
+    });
+  });
+</script>
+
+{% endblock %}

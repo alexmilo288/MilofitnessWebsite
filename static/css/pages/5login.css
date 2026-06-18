@@ -1,0 +1,126 @@
+/* ============================================================
+   MILOFITNESS — Login Page
+   ============================================================ */
+
+.login-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.login-hero__bg {
+  position: absolute;
+  inset: 0;
+  background: var(--dark);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,0.02) 80px, rgba(255,255,255,0.02) 81px),
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.02) 80px, rgba(255,255,255,0.02) 81px);
+}
+.login-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 15% 50%, rgba(10,132,255,0.09) 0%, transparent 60%);
+}
+.login-hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: calc(var(--nav-h) + 60px);
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.login-hero__top {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-hero__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 10vw, 9rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  margin: 16px 0 20px;
+}
+
+/* Login Card */
+.login-card {
+  width: 100%;
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  border-top: 3px solid var(--blue);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.login-card__header {
+  padding: 44px 52px 0;
+}
+.login-card__title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 1.1;
+  margin: 8px 0 0;
+}
+.login-card__form {
+  display: flex;
+  flex-direction: column;
+  padding: 36px 52px 52px;
+  gap: 22px;
+}
+.login-card__meta {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+}
+
+.login-forgot {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--grey);
+  transition: color var(--transition);
+}
+.login-forgot:hover {
+  color: var(--blue);
+}
+
+/* Divider */
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 4px 0;
+}
+.login-divider span {
+  flex: 1;
+  height: 1px;
+  background: var(--dark-4);
+}
+.login-divider p {
+  font-family: var(--font-cond);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--grey-light);
+  white-space: nowrap;
+  margin: 0;
+}

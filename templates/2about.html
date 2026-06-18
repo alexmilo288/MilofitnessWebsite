@@ -1,0 +1,241 @@
+{% extends "0base.html" %}
+
+{% block title %}The Journey — MiloFitness{% endblock %}
+
+
+{% block content %}
+
+  <!-- ============ JOURNEY HERO ============ -->
+  <section class="journey-hero">
+    <div class="journey-hero__bg"></div>
+    <div class="journey-hero__overlay"></div>
+    <div class="container journey-hero__content">
+      <p class="section-eyebrow">The Story of</p>
+      <h1 class="journey-hero__title">
+        <span class="title-line title-line--white">Alex</span>
+        <span class="title-line title-line--accent">Milosavljev</span>
+      </h1>
+      <p class="journey-hero__sub">From skinny and weak to a stage-ready competitor. A transformation of a lifetime.</p>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ============ TRANSFORMATION SLIDER ============ -->
+  <section class="transform-section section--dark fade-up">
+    <div class="container">
+      <div class="transform-header">
+        <p class="section-eyebrow">Physique Transformation</p>
+        <h2 class="section-title">DRAG TO SEE THE CHANGE</h2>
+      </div>
+
+      <div class="transform-stage">
+
+        <!-- ── Photo side ── -->
+      <div class="photo-stage">
+
+        <!-- Main active photo frame -->
+        <div class="photo-frame" id="activePhoto">
+          <div class="photo-frame__inner" id="photoInner">
+
+        <!-- Chapter 0 — 2017 -->
+        <div class="photo-ph photo-ph--0 active" data-chapter="0">
+          <img src="{{ url_for('static', filename='images/UI/skinny_photo1.png') }}" alt="Alex 2017" />
+        </div>
+
+        <!-- Chapter 1 — 2019 -->
+        <div class="photo-ph photo-ph--1" data-chapter="1">
+          <img src="{{ url_for('static', filename='images/UI/skinny_photo2.png') }}" alt="Alex 2019" />
+        </div>
+
+              <!-- Chapter 2 — 2022 -->
+        <div class="photo-ph photo-ph--2" data-chapter="2">
+          <img src="{{ url_for('static', filename='images/UI/growing_photo3.png') }}" alt="Alex 2022" />
+        </div>
+
+              <!-- Chapter 3 — 2023 -->
+        <div class="photo-ph photo-ph--3" data-chapter="3">
+          <img src="{{ url_for('static', filename='images/UI/growing_photo4.png') }}" alt="Alex 2023" />
+        </div>
+
+              <!-- Chapter 4 — 2026 -->
+        <div class="photo-ph photo-ph--4" data-chapter="4">
+          <img src="{{ url_for('static', filename='images/UI/final_photo5.png') }}" alt="Alex 2026" />
+        </div>
+
+        </div>
+      </div>
+
+          <!-- Thumbnail strip -->
+      <div class="photo-thumbs">
+        <div class="photo-thumb active" data-thumb="0">
+          <div class="photo-thumb__img">
+            <img src="{{ url_for('static', filename='images/UI/skinny_photo1.png') }}" alt="2017" />
+          </div>
+            
+      <span class="photo-thumb__year">2017</span>
+        </div>
+          <div class="photo-thumb" data-thumb="1">
+            <div class="photo-thumb__img">
+              <img src="{{ url_for('static', filename='images/UI/skinny_photo2.png') }}" alt="2019" />   
+          </div>
+              <span class="photo-thumb__year">2019</span>
+            </div>
+            <div class="photo-thumb" data-thumb="2">
+              <div class="photo-thumb__img">
+                <img src="{{ url_for('static', filename='images/UI/growing_photo3.png') }}" alt="2022" />
+              </div>
+              <span class="photo-thumb__year">2022</span>
+            </div>
+            <div class="photo-thumb" data-thumb="3">
+              <div class="photo-thumb__img">
+                <img src="{{ url_for('static', filename='images/UI/growing_photo4.png') }}" alt="2023" />
+              </div>
+              <span class="photo-thumb__year">2023</span>
+            </div>
+            <div class="photo-thumb" data-thumb="4">
+              <div class="photo-thumb__img">
+                <img src="{{ url_for('static', filename='images/UI/final_photo5.png') }}" alt="2026" />
+              </div>
+              <span class="photo-thumb__year">2026</span>
+            </div>
+          </div>
+
+        </div><!-- /photo-stage -->
+
+        <!-- ── Controls side ── -->
+        <div class="transform-controls">
+
+          <!-- Chapter dots -->
+          <div class="chapter-dots" id="chapterDots">
+            <button class="chapter-dot active" data-chapter="0">
+              <span class="dot-year">2017</span>
+              <span class="dot-label">The Beginning</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="1">
+              <span class="dot-year">2019</span>
+              <span class="dot-label">The Start</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="2">
+              <span class="dot-year">2022</span>
+              <span class="dot-label">The Grind</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="3">
+              <span class="dot-year">2023</span>
+              <span class="dot-label">The Coach</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="4">
+              <span class="dot-year">2026</span>
+              <span class="dot-label">The Stage</span>
+            </button>
+          </div>
+
+          <!-- Scrub slider -->
+          <div class="scrub-wrap">
+            <input type="range" id="journeySlider" class="journey-slider" min="0" max="4" step="1" value="0" />
+            <div class="scrub-labels">
+              <span>2017</span>
+              <span>2019</span>
+              <span>2022</span>
+              <span>2023</span>
+              <span>2026</span>
+            </div>
+          </div>
+
+          <!-- Chapter story card -->
+<!-- Chapter story card -->
+    <div class="chapter-card" id="chapterCard">
+      <div class="chapter-card__phase" id="cardPhase"></div>
+      <h3 class="chapter-card__title" id="cardTitle"></h3>
+      <p class="chapter-card__quote" id="cardQuote"></p>
+      <p class="chapter-card__body" id="cardBody"></p>
+      <div class="chapter-stats" id="chapterStats"></div>
+    </div>
+  </div><!-- /transform-controls -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MILESTONES TIMELINE ============ -->
+  <section class="milestones section fade-up">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Key Moments</p>
+        <h2 class="section-title">MILESTONES</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline__line"></div>
+
+        <div class="timeline-item timeline-item--left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2017</span>
+            <h3>Tired</h3>
+            <p>58kg and tired of feeling small. Made the decision to workout at home.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2019</span>
+            <h3>First Day at the Gym</h3>
+            <p>Walked in at 60kg with zero knowledge. Left with a purpose. The journey officially began.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2022</span>
+            <h3>The Grind Pays Off</h3>
+            <p>Three years of consistent training. Diet dialled in. Up 20kg and finally looking like someone who lifts.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--right">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-year">2023</span>
+            <h3>Coaching 50+ Clients</h3>
+            <p>Word spread fast. Transformed bodies started producing testimonials, referrals, and a growing waitlist.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item timeline-item--left">
+          <div class="timeline-dot timeline-dot--gold"></div>
+          <div class="timeline-card timeline-card--gold">
+            <span class="timeline-year timeline-year--gold">2026</span>
+            <h3>First Bodybuilding Competition 🏆</h3>
+            <p>Stepped on stage for the first time. 9 years of work distilled into one moment. Placed in the top 5 in Men's Physique.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PHILOSOPHY CTA ============ -->
+  <section class="philosophy section--dark section fade-up">
+    <div class="container">
+      <div class="philosophy__inner">
+        <p class="section-eyebrow">The Method</p>
+        <h2 class="philosophy__title">BUILT ON PROOF,<br><span class="accent">NOT PROMISES</span></h2>
+        <p class="philosophy__body">
+          Every program Milo coaches is rooted in exactly what worked for him — and the 100+ clients who came after. No fluff, no fads. Just the fundamentals, applied with precision and relentless consistency.
+        </p>
+        <div class="philosophy__ctas">
+          <a href="{{ url_for('programs') }}" class="btn btn--primary">View Programs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

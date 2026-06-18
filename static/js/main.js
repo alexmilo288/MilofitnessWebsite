@@ -203,39 +203,63 @@ document.addEventListener('mouseenter', () => {
   ---------------------------------------------------------- */
   const chapters = [
     {
-      phase: 'Chapter 01',
-      title: 'The Skinny Kid',
-      quote: '"I was embarrassed to take my shirt off. Something had to change."',
-      body:  'At 17, Milo weighed just 60kg. Despite being active, he struggled to build any muscle and felt invisible in every room he walked into. Fed up with feeling weak, he walked into a gym for the first time with no plan — just a decision to never look the same again.',
+      phase: "Chapter 01",
+      title: "The Skinny Kid",
+      quote: "I just wanted to look big.",
+      body: "2017. Alex was an anxious guy who didnt fill out any of his shirts. Finally, sick and tired of looking small, he stole his father's dumbells and started working out in his garage.",
       stats: [
-        { val: '60<small>kg</small>', label: 'Start Weight'  },
-        { val: '0',                   label: 'Gym Sessions'  },
-        { val: 'Day 1',               label: 'The Decision'  },
-      ],
+        { val: "58<small>kg</small>", label: "Body Weight" },
+        { val: "0",                   label: "Gym Sessions" },
+        { val: "Day 0",               label: "Tired" }
+      ]
     },
     {
-      phase: 'Chapter 02',
-      title: 'The Grind',
-      quote: '"Two years in and people started asking me what I was doing. That was the moment I knew."',
-      body:  'Between 2020 and 2022, Milo trained 5 days a week without exception. He studied nutrition, tracked everything, and began coaching friends for free. The discipline he built in those years became the foundation of every program he writes today.',
+      phase: "Chapter 02",
+      title: "First Steps",
+      quote: "Walked into the gym and had no idea what I was doing.",
+      body: "2019. Alex would spam pushups before a basketball game to look big, yet it was only until he won a gym membership in a competition at school, that he took the first steps towards his transformation. He was clueless, but he was in love with the process from day one.",
       stats: [
-        { val: '82<small>kg</small>', label: 'Peak Weight'     },
-        { val: '500+',                label: 'Sessions Logged'  },
-        { val: '2021',                label: 'PT Certified'     },
-      ],
+        { val: "60<small>kg</small>", label: "Body Weight" },
+        { val: "3x",                  label: "Per Week" },
+        { val: "Year 1",              label: "The Grind Begins" }
+      ]
     },
     {
-      phase: 'Chapter 03',
-      title: 'Stage Ready',
-      quote: '"Standing on that stage, I realised — this is what I was always meant to do."',
-      body:  "In 2023 Milo competed in his first NABBA bodybuilding competition. Months of peak-week nutrition, posing practice, and meticulous programming led to a top-5 finish in Men's Physique. The experience sharpened every method he now coaches his clients through.",
+      phase: "Chapter 03",
+      title: "The Grind",
+      quote: "Three years in and I finally started to look like I lifted.",
+      body: "2022. Diet dialled in. Training smarter. The compounding effect of consistency as Alex trained 5-6 days a week was finally showing up in the mirror. ",
       stats: [
-        { val: '..<small>kg</small>', label: 'Stage Weight'    },
-        { val: '..<small>%</small>',   label: 'Body Fat'         },
-        { val: '......',               label: '....'  },
-      ],
+        { val: "80<small>kg</small>", label: "Body Weight" },
+        { val: "+20kg",               label: "Gained" },
+        { val: "3 Yrs",               label: "Consistent" }
+      ]
     },
+    {
+      phase: "Chapter 04",
+      title: "The Coach",
+      quote: "If I could do this, I knew I could help others do it too.",
+      body: "2023. Certified PT. 50+ clients transformed. What started as a personal obsession became a business built on real results.",
+      stats: [
+        { val: "50+",     label: "Clients" },
+        { val: "PT Cert", label: "Qualified" },
+        { val: "2023",    label: "Certified" }
+      ]
+    },
+    {
+      phase: "Chapter 05",
+      title: "The Stage",
+      quote: "Every rep, every meal, every early morning — it all led here.",
+      body: "2026. The culmination of 9 years of dedication. Stepped on stage for the first time and placed in Men's Physique. The skinny kid is gone.",
+      stats: [
+        { val: "110<small>kg</small>", label: "Stage Weight" },
+        { val: "3+",               label: "Medals" },
+        { val: "9 Yrs",               label: "In The Making" }
+      ]
+    }
   ];
+
+  const TOTAL = chapters.length - 1; // 4
 
   /* ----------------------------------------------------------
      DOM REFS
@@ -251,12 +275,27 @@ document.addEventListener('mouseenter', () => {
   const photoThumbs = document.querySelectorAll('.photo-thumb');
 
   /* ----------------------------------------------------------
+     SET SLIDER to 0–100 range internally for smooth fill
+     but map to 5 chapters
+  ---------------------------------------------------------- */
+  slider.min  = '0';
+  slider.max  = '100';
+  slider.step = '1';
+  slider.value = '0';
+
+  /* ----------------------------------------------------------
+     MAP 0–100 progress to chapter index 0–4
+  ---------------------------------------------------------- */
+  function progressToChapter(progress) {
+    return Math.min(Math.floor(progress / (100 / chapters.length)), TOTAL);
+  }
+
+  /* ----------------------------------------------------------
      SWITCH PHOTO PANEL
   ---------------------------------------------------------- */
   function switchPhoto(idx) {
     photoPhs.forEach(ph => ph.classList.remove('active'));
     photoThumbs.forEach(t => t.classList.remove('active'));
-
     const ph    = document.querySelector(`.photo-ph[data-chapter="${idx}"]`);
     const thumb = document.querySelector(`.photo-thumb[data-thumb="${idx}"]`);
     if (ph)    ph.classList.add('active');
@@ -264,7 +303,7 @@ document.addEventListener('mouseenter', () => {
   }
 
   /* ----------------------------------------------------------
-     UPDATE CHAPTER CARD
+     UPDATE CHAPTER CARD — fade transition on chapter change
   ---------------------------------------------------------- */
   let currentChapter = -1;
 
@@ -274,14 +313,13 @@ document.addEventListener('mouseenter', () => {
 
     const ch = chapters[idx];
 
-    chapterCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    chapterCard.style.opacity    = '0';
-    chapterCard.style.transform  = 'translateY(8px)';
+    chapterCard.style.opacity   = '0';
+    chapterCard.style.transform = 'translateY(8px)';
 
     setTimeout(() => {
       cardPhase.textContent = ch.phase;
       cardTitle.textContent = ch.title;
-      cardQuote.textContent = ch.quote;
+      cardQuote.textContent = `"${ch.quote}"`;
       cardBody.textContent  = ch.body;
       cardStats.innerHTML   = ch.stats.map(s =>
         `<div class="cstat">
@@ -289,63 +327,54 @@ document.addEventListener('mouseenter', () => {
           <span class="cstat__label">${s.label}</span>
         </div>`
       ).join('');
-
       chapterCard.style.opacity   = '1';
       chapterCard.style.transform = 'translateY(0)';
-    }, 200);
+    }, 220);
   }
 
   /* ----------------------------------------------------------
-     UPDATE CHAPTER DOTS
+     UPDATE DOTS
   ---------------------------------------------------------- */
   function updateDots(idx) {
-    chapterDots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === idx);
-    });
+    chapterDots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
   }
 
   /* ----------------------------------------------------------
-     MASTER UPDATE — called on every slider move
+     MASTER UPDATE
   ---------------------------------------------------------- */
   function updateAll(progress) {
-    const t = progress / 100;
-
-    /* Which chapter are we in */
-    const activeChapter = t < 0.4 ? 0 : t < 0.75 ? 1 : 2;
-
-    /* Update slider fill track */
+    const idx = progressToChapter(progress);
     slider.style.backgroundSize = progress + '% 100%';
-
-    /* Update all UI */
-    updateDots(activeChapter);
-    updateChapterCard(activeChapter);
-    switchPhoto(activeChapter);
+    updateDots(idx);
+    updateChapterCard(idx);
+    switchPhoto(idx);
   }
 
   /* ----------------------------------------------------------
-     SLIDER INPUT — single source of truth
+     SLIDER INPUT
   ---------------------------------------------------------- */
   slider.addEventListener('input', () => {
     updateAll(parseInt(slider.value, 10));
   });
 
   /* ----------------------------------------------------------
-     CHAPTER DOT CLICKS — animated jump to target value
+     CHAPTER DOT CLICKS — animate to correct progress value
   ---------------------------------------------------------- */
   chapterDots.forEach((dot, i) => {
     dot.addEventListener('click', () => {
-      const target = i === 0 ? 0 : i === 1 ? 50 : 100;
+      // Map chapter index back to a progress value at the centre of each band
+      const target = Math.round((i / TOTAL) * 100);
       animateSliderTo(target);
     });
   });
 
   /* ----------------------------------------------------------
-     THUMBNAIL CLICKS — jump to chapter
+     THUMBNAIL CLICKS
   ---------------------------------------------------------- */
   photoThumbs.forEach(thumb => {
     thumb.addEventListener('click', () => {
       const idx    = parseInt(thumb.dataset.thumb, 10);
-      const target = idx === 0 ? 0 : idx === 1 ? 50 : 100;
+      const target = Math.round((idx / TOTAL) * 100);
       animateSliderTo(target);
     });
   });
@@ -362,7 +391,6 @@ document.addEventListener('mouseenter', () => {
     function step(ts) {
       const elapsed = ts - startTs;
       const prog    = Math.min(elapsed / dur, 1);
-      /* ease in-out quad */
       const ease    = prog < 0.5 ? 2 * prog * prog : -1 + (4 - 2 * prog) * prog;
       const val     = Math.round(start + diff * ease);
       slider.value  = val;
@@ -384,12 +412,10 @@ document.addEventListener('mouseenter', () => {
       }
     });
   }, { threshold: 0.2 });
-
   timelineCards.forEach(card => timelineObserver.observe(card));
 
-  
   /* ----------------------------------------------------------
-     INIT — set everything to chapter 0 state
+     INIT
   ---------------------------------------------------------- */
   updateAll(0);
 
@@ -458,5 +484,20 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!pwValid || !emailValid || !usernameValid) {
       e.preventDefault();
     }
+  });
+});
+
+
+document.querySelectorAll('.password-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = document.getElementById(btn.dataset.target);
+    const eyeIcon = btn.querySelector('.icon-eye');
+    const eyeOffIcon = btn.querySelector('.icon-eye-off');
+
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    eyeIcon.style.display = isHidden ? 'none' : 'block';
+    eyeOffIcon.style.display = isHidden ? 'block' : 'none';
+    btn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
   });
 });

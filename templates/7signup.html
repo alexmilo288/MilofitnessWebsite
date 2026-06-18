@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "0base.html" %}
 {% block title %}MiloFitness – Create Account{% endblock %}
 
 {% block content %}
@@ -41,9 +41,21 @@
           <small id="emailHint" class="field-hint">Must be a valid email address</small>
         </div>
 
-        <div class="form-group">
+<div class="form-group">
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="••••••••" required>
+          <div class="password-field">
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+            <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 4.22-5.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
 
           <ul id="pwChecklist" class="pw-checklist">
             <li data-rule="length" class="pw-checklist__item">At least 8 characters</li>
@@ -70,5 +82,5 @@
   </div>
 </section>
 
-<script src="{{ url_for('static', filename='js/signup-validation.js') }}"></script>
+
 {% endblock %}

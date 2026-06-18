@@ -40,3 +40,13 @@ def set_verified(user_id):
     con.execute('UPDATE users SET is_verified = 1 WHERE id = ?', (user_id,))
     con.commit()
     con.close()
+
+
+def username_or_email_exists(username, email):
+    con = get_db()
+    row = con.execute(
+        'SELECT 1 FROM users WHERE username = ? OR email = ?',
+        (username, email)
+    ).fetchone()
+    con.close()
+    return row is not None

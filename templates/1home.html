@@ -1,9 +1,14 @@
-{% extends "base.html" %}
+{% extends "0base.html" %}
 {% block title %}MiloFitness – Built Different{% endblock %}
+
+
 
 {% block content %}
 <!-- ========== HERO ========== -->
 <section class="hero" id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-bg"></div>
+
   <div class="hero-content">
     <p class="hero-eyebrow">The Coach You Need</p>
     <h1 class="hero-title">
@@ -11,22 +16,17 @@
       <span class="title-line title-line--accent">FITNESS</span>
     </h1>
     <p class="hero-tagline">Personal Training &nbsp;·&nbsp; Online Coaching &nbsp;·&nbsp; Strength Programs</p>
-
     <div class="hero-cta">
       <a href="{{ url_for('programs') }}" class="btn btn--primary">Start Your Journey</a>
       <a href="{{ url_for('about') }}" class="btn btn--ghost">Meet Alex</a>
     </div>
   </div>
 
-  <!-- Scroll hint -->
   <div class="hero-scroll-hint">
     <div class="scroll-line"></div>
     <span>Scroll</span>
   </div>
-
-</section><!-- /.hero -->
-
-
+</section>
 <!-- ========== STATS STRIP ========== -->
 <section class="stats-strip">
   <div class="stats-container">
@@ -60,7 +60,7 @@
 
       <div class="about-teaser__img-wrap">
 
-      <img src="{{ url_for('static', filename='images/UI/AlexPhoto.png') }}" alt="Alex">
+      <img src="{{ url_for('static', filename='images/UI/main_alex_photo.png') }}" alt="Alex">
       <div class="img-accent-border"></div>
       </div>
 
@@ -104,7 +104,7 @@
         <div class="program-card__icon">📲</div>
         <h3>Online Coaching</h3>
         <p>Full custom program, weekly check-ins, nutrition guidance and direct access to Alex — no matter where you are.</p>
-        <a href="programs.html" class="card-link">Learn more →</a>
+        <a href="{{ url_for('programs') }}" class="card-link">Learn more →</a>
       </div>
 
       <div class="program-card">

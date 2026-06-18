@@ -1,0 +1,41 @@
+/* ============================================================
+   MILOFITNESS — CSS Variables
+   ============================================================ */
+
+:root {
+  /* Colors */
+  --blue:        #2dafdeee;
+  --blue-dim:    #328296;
+  --blue-glow:   rgba(113, 193, 213, 0.25);
+  --black:       #000000;
+  --dark:        #0a0a0a;
+  --dark-2:      #111111;
+  --dark-3:      #181818;
+  --dark-4:      #222222;
+  --white:       #ffffff;
+  --off-white:   #e8e8e8;
+  --grey:        #888888;
+  --grey-light:  #555555;
+
+  /* Typography */
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-cond:    'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+
+  /* Spacing & Sizing */
+  --nav-h: 72px;
+  --radius: 4px;
+  --radius-lg: 8px;
+  --transition: 0.25s ease;
+  --container-max: 1200px;
+
+  /* Z-index layers */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 9999;
+}

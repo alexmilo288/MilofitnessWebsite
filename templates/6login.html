@@ -1,0 +1,65 @@
+{% extends "0base.html" %}
+{% block title %}MiloFitness – Sign In{% endblock %}
+
+{% block content %}
+
+<section class="login-hero">
+  <div class="login-hero__bg"></div>
+  <div class="login-hero__overlay"></div>
+
+  <div class="container login-hero__content">
+
+    <div class="login-card">
+
+      <div class="login-card__header">
+        <p class="section-eyebrow">Member Portal</p>
+        <h2 class="login-card__title">Sign In to Your Account</h2>
+      </div>
+
+      {% if error %}
+      <div class="form-error">{{ error }}</div>
+      {% endif %}
+
+      <form class="contact-form login-card__form" method="POST" action="{{ url_for('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="johndoe" required>
+        </div>
+
+<div class="form-group">
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+            <button type="button" class="password-toggle" data-target="password" aria-label="Show password">
+              <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 4.22-5.06M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+
+        <div class="login-divider">
+          <span></span>
+          <p>New to MiloFitness?</p>
+          <span></span>
+        </div>
+
+        <a href="/7signup" class="btn btn--ghost btn--full">Create an Account</a>
+
+      </form>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
