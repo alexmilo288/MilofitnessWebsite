@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'database', 'milofitness.db')
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'milofitness-secret-key-2024'
+app.config['SECRET_KEY'] = 'milofitness-secret-key-2026'
 app.permanent_session_lifetime = timedelta(minutes=30)
 csrf = CSRFProtect(app)
 CORS(app)
@@ -66,6 +66,25 @@ def login_required(f):
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if 'user' not in session:
+            return redirect(url_for('login'))
+        user = db.get_user_by_id(session['user_id'])
+        if not user or not user['is_admin']:
+            return redirect(url_for('dashboard'))
+        return f(*args, **kwargs)
+    return decorated
+
+def redirect_after_auth(user_id):
+    user = db.get_user_by_id(user_id)
+    if user and user['is_admin']:
+        return redirect(url_for('admin_dashboard'))
+    return redirect(url_for('dashboard'))
+
+
 
 
 # ── Home ───────────────────────────────────────────────────
@@ -118,7 +137,8 @@ def contact():
 @app.route('/6login', methods=['GET', 'POST'])
 def login():
     if 'user' in session:
-        return redirect(url_for('dashboard'))
+        return redirect_after_auth(session['user_id'])
+    
 
     error = None
     if request.method == 'POST':
@@ -155,11 +175,18 @@ def signup():
         username = sanitize(request.form.get('username', ''))
         email    = sanitize(request.form.get('email', ''))
         password = sanitize(request.form.get('password', ''))
+        client_code = sanitize(request.form.get('client_code', '')).upper().strip()
 
         error = check_password_strength(password)
 
         if not error and db.username_or_email_exists(username, email):
             error = 'Username or email already exists.'
+
+        code_row = None
+        if not error:
+            code_row = db.validate_client_code(client_code)
+            if not code_row:
+                error = 'Invalid or already-used client code.'
 
         if not error:
             hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
@@ -169,7 +196,9 @@ def signup():
             session['pending_signup'] = {
                 'username': username,
                 'email': email,
-                'password': hashed
+                'password': hashed,
+                'client_code': client_code,
+                'client_id': code_row['client_id']
             }
             session['2fa_code'] = code
             session['2fa_expires'] = (datetime.utcnow() + timedelta(minutes=10)).isoformat()
@@ -184,7 +213,6 @@ def signup():
                 error = 'Could not send verification email. Try again.'
 
     return render_template('7signup.html', error=error)
-
 
 
 
@@ -211,27 +239,35 @@ def verify_2fa():
             pending = session.pop('pending_signup', None)
 
             if pending:
-                # Signup flow: create the user now that they're verified
-                success = db.insert_user(pending['username'], pending['email'], pending['password'])
+                success = db.insert_user(
+                    pending['username'],
+                    pending['email'],
+                    pending['password'],
+                    pending.get('client_id')
+                )
                 if not success:
                     error = 'Username or email already exists.'
                     return render_template('verify_2fa.html', error=error)
 
                 user = db.get_user_by_username(pending['username'])
                 db.set_verified(user['id'])
+
+                # Redeem the client code now that the account is real
+                if pending.get('client_code'):
+                    db.redeem_client_code(pending['client_code'], user['id'])
+
                 session.permanent = True
                 session['user'] = user['username']
                 session['user_id'] = user['id']
+                return redirect_after_auth(user['id'])
             else:
-                # Login flow: user already exists, just finish logging them in
                 user_id  = session.pop('2fa_user_id')
                 username = session.pop('2fa_username')
                 db.set_verified(user_id)
                 session.permanent = True
                 session['user'] = username
                 session['user_id'] = user_id
-
-            return redirect(url_for('5client_dashboard'))
+                return redirect_after_auth(user_id)
         else:
             error = 'Incorrect code. Please try again.'
 
@@ -243,6 +279,41 @@ def verify_2fa():
 def dashboard():
     return render_template('5client_dashboard.html', username=session['user'])
 
+@app.route('/admin_dashboard', methods=['GET', 'POST'])
+@admin_required
+def admin_dashboard():
+    new_code = None
+
+    if request.method == 'POST':
+        name = sanitize(request.form.get('name', ''))
+        email = sanitize(request.form.get('email', ''))
+        notes = sanitize(request.form.get('notes', ''))
+
+        profile_fields = {}
+        for field in db.CLIENT_PROFILE_FIELDS:
+            profile_fields[field] = sanitize(request.form.get(field, ''))
+
+        if name:
+            client_id, new_code = db.create_client_with_code(name, email, notes, **profile_fields)
+
+    clients = db.get_all_clients()
+    active_codes = db.count_active_codes()
+    linked_accounts = db.count_linked_accounts()
+
+    clients_with_age = []
+    for client in clients:
+        client_dict = dict(client)
+        client_dict['age'] = db.calculate_age(client['date_of_birth'])
+        clients_with_age.append(client_dict)
+
+    return render_template(
+        'admin_dashboard.html',
+        clients=clients_with_age,
+        username=session['user'],
+        new_code=new_code,
+        active_codes=active_codes,
+        linked_accounts=linked_accounts
+    )
 
 # ── Logout ─────────────────────────────────────────────────
 @app.route('/logout')

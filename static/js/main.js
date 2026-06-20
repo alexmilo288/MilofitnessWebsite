@@ -501,3 +501,14 @@ document.querySelectorAll('.password-toggle').forEach(btn => {
     btn.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
   });
 });
+document.querySelectorAll('.account-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.account-tab').forEach(t => t.classList.remove('account-tab--active'));
+    tab.classList.add('account-tab--active');
+
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.account-form').forEach(form => {
+      form.style.display = form.dataset.form === target ? 'block' : 'none';
+    });
+  });
+});

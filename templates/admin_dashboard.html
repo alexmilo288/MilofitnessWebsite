@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — MiloFitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin_dashboard.css') }}">
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">MILO<span>FITNESS</span></div>
+      <div class="admin-subtitle">Admin Panel</div>
+
+      <nav class="admin-nav">
+        <a href="{{ url_for('admin_dashboard') }}" class="admin-nav__link admin-nav__link--active">Clients</a>
+        <a href="#" class="admin-nav__link">Timetable</a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <div class="admin-user-chip">Logged in as <strong>{{ username }}</strong></div>
+        <a href="{{ url_for('logout') }}" class="admin-logout">Log out</a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <div class="admin-header">
+        <div>
+          <div class="admin-header__eyebrow">Overview</div>
+          <h1 class="admin-header__title">Clients</h1>
+        </div>
+        <button class="btn btn--primary" id="openAddClientBtn">+ Add Client</button>
+      </div>
+
+      {% if new_code %}
+      <div class="code-reveal" style="margin-bottom: 24px;">
+        <div class="code-reveal__label">Client created — give them this code</div>
+        <div class="code-reveal__code">{{ new_code }}</div>
+      </div>
+      {% endif %}
+
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__val">{{ clients|length }}</div>
+          <div class="admin-stat-card__label">Total Clients</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__val">{{ active_codes }}</div>
+          <div class="admin-stat-card__label">Active Codes</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-card__val">{{ linked_accounts }}</div>
+          <div class="admin-stat-card__label">Linked Accounts</div>
+        </div>
+      </div>
+
+      <div class="admin-panel">
+        <div class="admin-panel__header">
+          <div class="admin-panel__title">All Clients</div>
+        </div>
+
+        {% if clients %}
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Added</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for client in clients %}
+            <tr>
+              <td>{{ client.name }}</td>
+              <td>{{ client.age if client.age is not none else '—' }}</td>
+              <td>{{ client.created_at }}</td>
+              <td>
+                <button type="button" class="btn btn--ghost btn--small view-details-btn"
+                  data-name="{{ client.name }}"
+                  data-email="{{ client.email }}"
+                  data-date_of_birth="{{ client.date_of_birth }}"
+                  data-age="{{ client.age }}"
+                  data-phone="{{ client.phone }}"
+                  data-emergency_contact_name="{{ client.emergency_contact_name }}"
+                  data-emergency_contact_phone="{{ client.emergency_contact_phone }}"
+                  data-notes="{{ client.notes }}"
+                  data-medical_conditions="{{ client.medical_conditions }}"
+                  data-injuries_surgeries="{{ client.injuries_surgeries }}"
+                  data-medications="{{ client.medications }}"
+                  data-allergies="{{ client.allergies }}"
+                  data-doctor_notes="{{ client.doctor_notes }}"
+                  data-fitness_goals="{{ client.fitness_goals }}"
+                  data-height="{{ client.height }}"
+                  data-weight="{{ client.weight }}"
+                  data-body_measurements="{{ client.body_measurements }}"
+                  data-body_fat_percentage="{{ client.body_fat_percentage }}"
+                  data-strength_test_notes="{{ client.strength_test_notes }}"
+                  data-flexibility_test_notes="{{ client.flexibility_test_notes }}"
+                  data-cardio_test_notes="{{ client.cardio_test_notes }}"
+                  data-mobility_assessment_notes="{{ client.mobility_assessment_notes }}"
+                  data-occupation="{{ client.occupation }}"
+                  data-activity_level="{{ client.activity_level }}"
+                  data-sleep_habits="{{ client.sleep_habits }}"
+                  data-exercise_history="{{ client.exercise_history }}"
+                  data-dietary_habits="{{ client.dietary_habits }}">View Details</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="admin-table__empty">No clients yet. Add your first one to get started.</div>
+        {% endif %}
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Add Client Modal -->
+  <div class="modal-overlay" id="addClientModal">
+    <div class="modal-card modal-card--large">
+      <div class="modal-card__title">Add New Client</div>
+
+      <form method="POST" action="{{ url_for('admin_dashboard') }}" id="addClientForm">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="modal-tabs">
+          <button type="button" class="modal-tab modal-tab--active" data-tab="personal">Personal</button>
+          <button type="button" class="modal-tab" data-tab="health">Health</button>
+          <button type="button" class="modal-tab" data-tab="goals">Goals</button>
+          <button type="button" class="modal-tab" data-tab="measurements">Measurements</button>
+          <button type="button" class="modal-tab" data-tab="assessment">Assessment</button>
+          <button type="button" class="modal-tab" data-tab="lifestyle">Lifestyle</button>
+        </div>
+
+        <div class="modal-tab-panels">
+
+          <!-- Personal -->
+          <div class="modal-tab-panel modal-tab-panel--active" data-panel="personal">
+            <div class="form-group">
+              <label for="clientName">Name</label>
+              <input type="text" id="clientName" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="clientEmail">Email (optional)</label>
+              <input type="email" id="clientEmail" name="email">
+            </div>
+            <div class="form-group">
+              <label for="dateOfBirth">Date of Birth</label>
+              <input type="date" id="dateOfBirth" name="date_of_birth">
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="text" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+              <label for="emergencyContactName">Emergency Contact Name</label>
+              <input type="text" id="emergencyContactName" name="emergency_contact_name">
+            </div>
+            <div class="form-group">
+              <label for="emergencyContactPhone">Emergency Contact Phone</label>
+              <input type="text" id="emergencyContactPhone" name="emergency_contact_phone">
+            </div>
+            <div class="form-group">
+              <label for="clientNotes">General Notes</label>
+              <textarea id="clientNotes" name="notes" rows="3"></textarea>
+            </div>
+          </div>
+
+          <!-- Health -->
+          <div class="modal-tab-panel" data-panel="health">
+            <div class="form-group">
+              <label for="medicalConditions">Medical Conditions</label>
+              <textarea id="medicalConditions" name="medical_conditions" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="injuriesSurgeries">Injuries / Surgeries</label>
+              <textarea id="injuriesSurgeries" name="injuries_surgeries" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="medications">Medications</label>
+              <textarea id="medications" name="medications" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="allergies">Allergies</label>
+              <textarea id="allergies" name="allergies" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="doctorNotes">Doctor / Specialist Notes</label>
+              <textarea id="doctorNotes" name="doctor_notes" rows="2"></textarea>
+            </div>
+          </div>
+
+          <!-- Goals -->
+          <div class="modal-tab-panel" data-panel="goals">
+            <div class="form-group">
+              <label for="fitnessGoals">Fitness Goals</label>
+              <textarea id="fitnessGoals" name="fitness_goals" rows="4" placeholder="e.g. weight loss, strength improvement, rehab..."></textarea>
+            </div>
+          </div>
+
+          <!-- Measurements -->
+          <div class="modal-tab-panel" data-panel="measurements">
+            <div class="form-group">
+              <label for="height">Height</label>
+              <input type="text" id="height" name="height" placeholder="e.g. 178cm">
+            </div>
+            <div class="form-group">
+              <label for="weight">Weight</label>
+              <input type="text" id="weight" name="weight" placeholder="e.g. 75kg">
+            </div>
+            <div class="form-group">
+              <label for="bodyMeasurements">Body Measurements</label>
+              <textarea id="bodyMeasurements" name="body_measurements" rows="2" placeholder="waist, chest, hips, etc."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="bodyFatPercentage">Body Fat Percentage</label>
+              <input type="text" id="bodyFatPercentage" name="body_fat_percentage" placeholder="e.g. 18%">
+            </div>
+          </div>
+
+          <!-- Assessment -->
+          <div class="modal-tab-panel" data-panel="assessment">
+            <div class="form-group">
+              <label for="strengthTestNotes">Strength Test Notes</label>
+              <textarea id="strengthTestNotes" name="strength_test_notes" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="flexibilityTestNotes">Flexibility Test Notes</label>
+              <textarea id="flexibilityTestNotes" name="flexibility_test_notes" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="cardioTestNotes">Cardiovascular Test Notes</label>
+              <textarea id="cardioTestNotes" name="cardio_test_notes" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="mobilityAssessmentNotes">Balance / Mobility Assessment</label>
+              <textarea id="mobilityAssessmentNotes" name="mobility_assessment_notes" rows="2"></textarea>
+            </div>
+          </div>
+
+          <!-- Lifestyle -->
+          <div class="modal-tab-panel" data-panel="lifestyle">
+            <div class="form-group">
+              <label for="occupation">Occupation</label>
+              <input type="text" id="occupation" name="occupation">
+            </div>
+            <div class="form-group">
+              <label for="activityLevel">Daily Activity Level</label>
+              <input type="text" id="activityLevel" name="activity_level">
+            </div>
+            <div class="form-group">
+              <label for="sleepHabits">Sleep Habits</label>
+              <textarea id="sleepHabits" name="sleep_habits" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="exerciseHistory">Exercise History</label>
+              <textarea id="exerciseHistory" name="exercise_history" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="dietaryHabits">Dietary Habits</label>
+              <textarea id="dietaryHabits" name="dietary_habits" rows="2"></textarea>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn--ghost" id="cancelAddClientBtn">Cancel</button>
+          <button type="submit" class="btn btn--primary">Create Client</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Details Modal -->
+  <div class="modal-overlay" id="viewDetailsModal">
+    <div class="modal-card modal-card--large">
+      <div class="modal-card__title" id="viewDetailsName">Client Details</div>
+
+      <div class="details-grid">
+
+        <div class="details-section">
+          <div class="details-section__title">Personal</div>
+          <div class="details-row"><span>Email</span><span class="vd-email">—</span></div>
+          <div class="details-row"><span>Date of Birth</span><span class="vd-date_of_birth">—</span></div>
+          <div class="details-row"><span>Age</span><span class="vd-age">—</span></div>
+          <div class="details-row"><span>Phone</span><span class="vd-phone">—</span></div>
+          <div class="details-row"><span>Emergency Contact</span><span class="vd-emergency_contact_name">—</span></div>
+          <div class="details-row"><span>Emergency Phone</span><span class="vd-emergency_contact_phone">—</span></div>
+          <div class="details-row"><span>Notes</span><span class="vd-notes">—</span></div>
+        </div>
+
+        <div class="details-section">
+          <div class="details-section__title">Health</div>
+          <div class="details-row"><span>Medical Conditions</span><span class="vd-medical_conditions">—</span></div>
+          <div class="details-row"><span>Injuries / Surgeries</span><span class="vd-injuries_surgeries">—</span></div>
+          <div class="details-row"><span>Medications</span><span class="vd-medications">—</span></div>
+          <div class="details-row"><span>Allergies</span><span class="vd-allergies">—</span></div>
+          <div class="details-row"><span>Doctor Notes</span><span class="vd-doctor_notes">—</span></div>
+        </div>
+
+        <div class="details-section">
+          <div class="details-section__title">Goals</div>
+          <div class="details-row"><span>Fitness Goals</span><span class="vd-fitness_goals">—</span></div>
+        </div>
+
+        <div class="details-section">
+          <div class="details-section__title">Measurements</div>
+          <div class="details-row"><span>Height</span><span class="vd-height">—</span></div>
+          <div class="details-row"><span>Weight</span><span class="vd-weight">—</span></div>
+          <div class="details-row"><span>Body Measurements</span><span class="vd-body_measurements">—</span></div>
+          <div class="details-row"><span>Body Fat %</span><span class="vd-body_fat_percentage">—</span></div>
+        </div>
+
+        <div class="details-section">
+          <div class="details-section__title">Assessment</div>
+          <div class="details-row"><span>Strength</span><span class="vd-strength_test_notes">—</span></div>
+          <div class="details-row"><span>Flexibility</span><span class="vd-flexibility_test_notes">—</span></div>
+          <div class="details-row"><span>Cardiovascular</span><span class="vd-cardio_test_notes">—</span></div>
+          <div class="details-row"><span>Mobility / Balance</span><span class="vd-mobility_assessment_notes">—</span></div>
+        </div>
+
+        <div class="details-section">
+          <div class="details-section__title">Lifestyle</div>
+          <div class="details-row"><span>Occupation</span><span class="vd-occupation">—</span></div>
+          <div class="details-row"><span>Activity Level</span><span class="vd-activity_level">—</span></div>
+          <div class="details-row"><span>Sleep Habits</span><span class="vd-sleep_habits">—</span></div>
+          <div class="details-row"><span>Exercise History</span><span class="vd-exercise_history">—</span></div>
+          <div class="details-row"><span>Dietary Habits</span><span class="vd-dietary_habits">—</span></div>
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn--ghost" id="closeViewDetailsBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/admin_dashboard.js') }}"></script>
+</body>
+</html>
