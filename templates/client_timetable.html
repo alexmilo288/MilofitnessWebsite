@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — MiloFitness</title>
+  <title>My Timetable — MiloFitness</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin_dashboard.css') }}">
@@ -17,8 +17,8 @@
       <div class="admin-subtitle">Member Portal</div>
 
       <nav class="admin-nav">
-        <a href="{{ url_for('dashboard') }}" class="admin-nav__link admin-nav__link--active">Dashboard</a>
-        <a href="{{ url_for('my_timetable') }}" class="admin-nav__link">Timetable</a>
+        <a href="{{ url_for('dashboard') }}" class="admin-nav__link">Dashboard</a>
+        <a href="{{ url_for('my_timetable') }}" class="admin-nav__link admin-nav__link--active">Timetable</a>
       </nav>
 
       <div class="admin-sidebar-footer">
@@ -32,30 +32,26 @@
       <div class="admin-header">
         <div>
           <div class="admin-header__eyebrow">Member Area</div>
-          <h1 class="admin-header__title">Welcome, {{ username }}</h1>
+          <h1 class="admin-header__title">My Timetable</h1>
         </div>
       </div>
 
-      <div class="client-card-grid">
-        <a href="{{ url_for('my_timetable') }}" class="client-card">
-          <div class="client-card__title">My Timetable</div>
-          <p class="client-card__desc">View the sessions Alex has booked you into this week.</p>
-        </a>
-
-        <div class="client-card client-card--disabled">
-          <div class="client-card__title">My Program</div>
-          <p class="client-card__desc">Coming soon.</p>
-        </div>
-
-        <div class="client-card client-card--disabled">
-          <div class="client-card__title">My Progress</div>
-          <p class="client-card__desc">Coming soon.</p>
-        </div>
+      <div class="week-nav">
+        <button type="button" id="prevWeekBtn" class="btn btn--ghost btn--small">&larr; Prev Week</button>
+        <div class="week-nav__label" id="weekLabel">Loading...</div>
+        <button type="button" id="nextWeekBtn" class="btn btn--ghost btn--small">Next Week &rarr;</button>
       </div>
+
+      <div class="calendar-wrap">
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+
+      <div id="noSlotsMsg" style="display:none; margin-top:24px; color:var(--grey);"></div>
 
     </main>
   </div>
 
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/client_timetable.js') }}"></script>
 </body>
 </html>

@@ -78,6 +78,33 @@ conn.execute('''
     )
 ''')
 
+conn.execute('''
+    CREATE TABLE IF NOT EXISTS schedule_slots (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        day_of_week INTEGER,
+        specific_date TEXT,
+        start_time TEXT NOT NULL,
+        end_time TEXT NOT NULL,
+        is_recurring INTEGER NOT NULL DEFAULT 1,
+        capacity INTEGER NOT NULL DEFAULT 1,
+        label TEXT,
+        status TEXT NOT NULL DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+''')
+
+conn.execute('''
+    CREATE TABLE IF NOT EXISTS slot_bookings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        slot_id INTEGER NOT NULL,
+        client_id INTEGER NOT NULL,
+        status TEXT NOT NULL DEFAULT 'booked',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (slot_id) REFERENCES schedule_slots(id),
+        FOREIGN KEY (client_id) REFERENCES clients(id)
+    )
+''')
+
 conn.commit()
 conn.close()
-print("Done! clients, users, and client_codes tables ready.")
+print("Done! clients, users, client_codes, schedule_slots, and slot_bookings tables ready.")

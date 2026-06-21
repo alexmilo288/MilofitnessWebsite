@@ -181,3 +181,157 @@ def count_linked_accounts():
     row = con.execute('SELECT COUNT(*) as c FROM users WHERE client_id IS NOT NULL').fetchone()
     con.close()
     return row['c']
+
+# ── Schedule Slots ─────────────────────────────────────────
+
+def create_slot(start_time, end_time, is_recurring, day_of_week=None,
+                 specific_date=None, capacity=1, label=''):
+    """Creates a schedule slot. Either recurring (day_of_week set) or
+    one-off (specific_date set), not both. Returns the new slot_id."""
+    con = get_db()
+    cur = con.execute(
+        '''INSERT INTO schedule_slots
+           (day_of_week, specific_date, start_time, end_time, is_recurring, capacity, label)
+           VALUES (?, ?, ?, ?, ?, ?, ?)''',
+        (day_of_week, specific_date, start_time, end_time, int(is_recurring), capacity, label)
+    )
+    slot_id = cur.lastrowid
+    con.commit()
+    con.close()
+    return slot_id
+
+
+def get_slot_by_id(slot_id):
+    con = get_db()
+    slot = con.execute('SELECT * FROM schedule_slots WHERE id = ?', (slot_id,)).fetchone()
+    con.close()
+    return slot
+
+
+def get_all_slots():
+    """All active slots, ordered for a weekly view (recurring) then by date (one-off)."""
+    con = get_db()
+    slots = con.execute(
+        '''SELECT * FROM schedule_slots
+           WHERE status = 'active'
+           ORDER BY is_recurring DESC, day_of_week, specific_date, start_time'''
+    ).fetchall()
+    con.close()
+    return slots
+
+
+def cancel_slot(slot_id):
+    """Soft-deletes a slot. Existing bookings are left as-is (history preserved)."""
+    con = get_db()
+    con.execute("UPDATE schedule_slots SET status = 'cancelled' WHERE id = ?", (slot_id,))
+    con.commit()
+    con.close()
+
+
+# ── Slot Bookings ──────────────────────────────────────────
+
+def get_active_booking_count(slot_id):
+    con = get_db()
+    row = con.execute(
+        "SELECT COUNT(*) as c FROM slot_bookings WHERE slot_id = ? AND status = 'booked'",
+        (slot_id,)
+    ).fetchone()
+    con.close()
+    return row['c']
+
+
+def is_client_already_booked(slot_id, client_id):
+    con = get_db()
+    row = con.execute(
+        '''SELECT 1 FROM slot_bookings
+           WHERE slot_id = ? AND client_id = ? AND status = 'booked' ''',
+        (slot_id, client_id)
+    ).fetchone()
+    con.close()
+    return row is not None
+
+
+def book_client_into_slot(slot_id, client_id):
+    """Books a client into a slot if there's room and they're not already in it.
+    Returns (success: bool, message: str)."""
+    slot = get_slot_by_id(slot_id)
+    if not slot or slot['status'] != 'active':
+        return False, 'This slot is not available.'
+
+    if is_client_already_booked(slot_id, client_id):
+        return False, 'This client is already booked into this slot.'
+
+    current_count = get_active_booking_count(slot_id)
+    if current_count >= slot['capacity']:
+        return False, 'This slot is full.'
+
+    con = get_db()
+    con.execute(
+        'INSERT INTO slot_bookings (slot_id, client_id) VALUES (?, ?)',
+        (slot_id, client_id)
+    )
+    con.commit()
+    con.close()
+    return True, 'Client booked successfully.'
+
+
+def cancel_booking(booking_id):
+    con = get_db()
+    con.execute("UPDATE slot_bookings SET status = 'cancelled' WHERE id = ?", (booking_id,))
+    con.commit()
+    con.close()
+
+
+def get_bookings_for_slot(slot_id):
+    """Returns clients booked into a given slot (with their booking_id for cancel buttons)."""
+    con = get_db()
+    rows = con.execute(
+        '''SELECT sb.id AS booking_id, c.id AS client_id, c.name
+           FROM slot_bookings sb
+           JOIN clients c ON c.id = sb.client_id
+           WHERE sb.slot_id = ? AND sb.status = 'booked' ''',
+        (slot_id,)
+    ).fetchall()
+    con.close()
+    return rows
+
+
+def get_full_timetable():
+    """Returns every active slot with its bookings, for the admin timetable view.
+    One row per slot+client (or one row per slot if empty, via LEFT JOIN)."""
+    con = get_db()
+    rows = con.execute(
+        '''SELECT s.id AS slot_id, s.day_of_week, s.specific_date, s.start_time, s.end_time,
+                  s.is_recurring, s.capacity, s.label,
+                  sb.id AS booking_id, c.id AS client_id, c.name AS client_name
+           FROM schedule_slots s
+           LEFT JOIN slot_bookings sb ON sb.slot_id = s.id AND sb.status = 'booked'
+           LEFT JOIN clients c ON c.id = sb.client_id
+           WHERE s.status = 'active'
+           ORDER BY s.is_recurring DESC, s.day_of_week, s.specific_date, s.start_time'''
+    ).fetchall()
+    con.close()
+    return rows
+
+
+def get_client_schedule(client_id):
+    """Returns just this client's bookings — used by the client dashboard."""
+    con = get_db()
+    rows = con.execute(
+        '''SELECT s.id AS slot_id, s.day_of_week, s.specific_date, s.start_time, s.end_time,
+                  s.is_recurring, s.label, sb.id AS booking_id
+           FROM slot_bookings sb
+           JOIN schedule_slots s ON s.id = sb.slot_id
+           WHERE sb.client_id = ? AND sb.status = 'booked' AND s.status = 'active'
+           ORDER BY s.is_recurring DESC, s.day_of_week, s.specific_date, s.start_time''',
+        (client_id,)
+    ).fetchall()
+    con.close()
+    return rows
+
+#client dashboard timetable. 
+def get_client_id_for_user(user_id):
+    con = get_db()
+    row = con.execute('SELECT client_id FROM users WHERE id = ?', (user_id,)).fetchone()
+    con.close()
+    return row['client_id'] if row else None

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timetable — MiloFitness Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/pages/admin_dashboard.css">
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-logo">MILO<span>FITNESS</span></div>
+      <div class="admin-subtitle">Admin Panel</div>
+
+      <nav class="admin-nav">
+        <a href="/admin_dashboard" class="admin-nav__link">Clients</a>
+        <a href="/admin/timetable" class="admin-nav__link admin-nav__link--active">Timetable</a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <div class="admin-user-chip">Logged in as <strong id="usernameChip"></strong></div>
+        <a href="/logout" class="admin-logout">Log out</a>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+      <div class="admin-header">
+        <div>
+          <div class="admin-header__eyebrow">Schedule</div>
+          <h1 class="admin-header__title">Timetable</h1>
+        </div>
+        <button class="btn btn--primary" id="openAddSlotBtn">+ Add Slot</button>
+      </div>
+
+      <!-- Week navigation -->
+      <div class="week-nav">
+        <button type="button" id="prevWeekBtn" class="btn btn--ghost btn--small">&larr; Prev Week</button>
+        <div class="week-nav__label" id="weekLabel">Loading...</div>
+        <button type="button" id="nextWeekBtn" class="btn btn--ghost btn--small">Next Week &rarr;</button>
+      </div>
+
+      <!-- Calendar grid -->
+      <div class="calendar-wrap">
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- Filled entirely by admin_timetable.js -->
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Add Slot Modal -->
+  <div class="modal-overlay" id="addSlotModal">
+    <div class="modal-card">
+      <div class="modal-card__title">Add New Slot</div>
+
+      <div id="addSlotError" class="form-error" style="display:none; margin-bottom: 16px;"></div>
+
+      <form id="addSlotForm">
+        <div class="form-group">
+          <label>Slot Type</label>
+          <div class="recurrence-toggle">
+            <button type="button" class="recurrence-toggle__btn recurrence-toggle__btn--active" data-value="1">Recurring Weekly</button>
+            <button type="button" class="recurrence-toggle__btn" data-value="0">One-Off Date</button>
+          </div>
+          <input type="hidden" id="isRecurringInput" value="1">
+        </div>
+
+        <div class="form-group" id="dayOfWeekGroup">
+          <label for="dayOfWeek">Day of Week</label>
+          <select id="dayOfWeek">
+            <option value="0">Monday</option>
+            <option value="1">Tuesday</option>
+            <option value="2">Wednesday</option>
+            <option value="3">Thursday</option>
+            <option value="4">Friday</option>
+            <option value="5">Saturday</option>
+            <option value="6">Sunday</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="specificDateGroup" style="display: none;">
+          <label for="specificDate">Date</label>
+          <input type="date" id="specificDate">
+        </div>
+
+        <div class="form-group form-group--split">
+          <div>
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" step="900" required>
+          </div>
+          <div>
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime" step="900" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="capacity">Capacity</label>
+          <input type="number" id="capacity" min="1" value="1" required>
+          <div class="form-hint">1 = personal training. Higher = group class.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="slotLabel">Label (optional)</label>
+          <input type="text" id="slotLabel" placeholder="e.g. Morning HIIT, 1-on-1 Session">
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn--ghost" id="cancelAddSlotBtn">Cancel</button>
+          <button type="submit" class="btn btn--primary">Create Slot</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Assign Client / Slot Detail Modal -->
+  <div class="modal-overlay" id="assignClientModal">
+    <div class="modal-card">
+      <div class="modal-card__title">Slot Details</div>
+      <div class="modal-card__subtitle" id="assignSlotInfo"></div>
+
+      <div id="assignError" class="form-error" style="display:none; margin-bottom: 16px;"></div>
+
+      <form id="assignClientForm">
+        <div class="form-group">
+          <label for="assignClientSelect">Assign a client</label>
+          <select id="assignClientSelect" required>
+            <option value="" disabled selected>Select a client...</option>
+            <!-- Filled by admin_timetable.js -->
+          </select>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn--ghost" id="cancelAssignClientBtn">Close</button>
+          <button type="submit" class="btn btn--primary">Assign</button>
+        </div>
+      </form>
+
+      <div class="cancel-slot-row">
+        <button type="button" class="btn btn--ghost btn--small btn--danger" id="cancelSlotFromModalBtn">Cancel This Slot</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/main.js"></script>
+  <script src="/static/js/admin_dashboard.js"></script>
+  <script src="/static/js/admin_timetable.js"></script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect, session, url_for
-from flask_wtf.csrf import CSRFProtect, CSRFError
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify
+from flask_wtf.csrf import CSRFProtect, CSRFError, generate_csrf
 from flask_cors import CORS
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from functools import wraps
 import email_utils
 import sqlite3
@@ -10,6 +10,10 @@ import bcrypt
 import bleach
 import re
 import user_management as db
+import calendar
+ 
+
+
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -315,6 +319,304 @@ def admin_dashboard():
         linked_accounts=linked_accounts
     )
 
+@app.route('/my_timetable')
+@login_required
+def my_timetable():
+    return render_template('client_timetable.html', username=session['user'])
+
+
+@app.route('/api/client/timetable', methods=['GET'])
+@login_required
+def api_client_timetable():
+    client_id = db.get_client_id_for_user(session['user_id'])
+    if not client_id:
+        return jsonify({'error': 'No client profile is linked to this account yet.'}), 400
+
+    week_param = request.args.get('week')
+    if week_param:
+        try:
+            anchor = date.fromisoformat(week_param)
+        except ValueError:
+            anchor = date.today()
+    else:
+        anchor = date.today()
+
+    week_start = anchor - timedelta(days=anchor.weekday())
+    week_dates = [week_start + timedelta(days=i) for i in range(7)]
+    day_names_short = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+    prev_week = (week_start - timedelta(days=7)).isoformat()
+    next_week = (week_start + timedelta(days=7)).isoformat()
+    week_label = f"{week_dates[0].strftime('%b')} {week_dates[0].day} \u2013 {week_dates[6].strftime('%b')} {week_dates[6].day}, {week_dates[6].year}"
+
+    week_days = [
+        {'iso': d.isoformat(), 'day_name': day_names_short[i], 'day_num': d.day}
+        for i, d in enumerate(week_dates)
+    ]
+
+    raw_rows = db.get_client_schedule(client_id)
+    grid_slots = build_client_week_grid(raw_rows, week_dates, day_names_short)
+    time_labels = build_time_labels()
+    total_grid_height = round((DAY_END_MINUTES - DAY_START_MINUTES) * PIXELS_PER_MINUTE)
+
+    return jsonify({
+        'week_label': week_label,
+        'prev_week': prev_week,
+        'next_week': next_week,
+        'week_days': week_days,
+        'grid_slots': grid_slots,
+        'time_labels': time_labels,
+        'total_grid_height': total_grid_height
+    })
+
+def build_client_week_grid(raw_rows, week_dates, day_names_short):
+    grid = {d.isoformat(): [] for d in week_dates}
+
+    for row in raw_rows:
+        start_min = time_to_minutes(row['start_time'])
+        end_min = time_to_minutes(row['end_time'])
+
+        clamped_start = max(start_min, DAY_START_MINUTES)
+        clamped_end = min(end_min, DAY_END_MINUTES)
+
+        slot = {
+            'slot_id': row['slot_id'],
+            'start_time': row['start_time'],
+            'end_time': row['end_time'],
+            'label': row['label'],
+            'top_px': round((clamped_start - DAY_START_MINUTES) * PIXELS_PER_MINUTE),
+            'height_px': max(round((clamped_end - clamped_start) * PIXELS_PER_MINUTE), 24)
+        }
+
+        if row['is_recurring']:
+            target_date = week_dates[row['day_of_week']]
+            day_label = day_names_short[row['day_of_week']]
+            slot['slot_info'] = f"{day_label} {row['start_time']}\u2013{row['end_time']}"
+            grid[target_date.isoformat()].append(slot)
+        else:
+            if row['specific_date'] in grid:
+                d = date.fromisoformat(row['specific_date'])
+                day_label = day_names_short[d.weekday()]
+                slot['slot_info'] = f"{day_label} {d.month}/{d.day} {row['start_time']}\u2013{row['end_time']}"
+                grid[row['specific_date']].append(slot)
+
+    return grid
+
+# ── Admin Timetable ───────────────────────────────────────
+
+DAY_START_MINUTES = 6 * 60   # 6:00 AM
+DAY_END_MINUTES = 21 * 60    # 9:00 PM
+PIXELS_PER_MINUTE = 1.2
+
+
+def time_to_minutes(time_str):
+    h, m = map(int, time_str.split(':'))
+    return h * 60 + m
+
+
+def build_time_labels():
+    labels = []
+    minutes = DAY_START_MINUTES
+    while minutes <= DAY_END_MINUTES:
+        hour = minutes // 60
+        minute = minutes % 60
+        suffix = 'AM' if hour < 12 else 'PM'
+        display_hour = hour if hour <= 12 else hour - 12
+        if display_hour == 0:
+            display_hour = 12
+        labels.append({
+            'top_px': round((minutes - DAY_START_MINUTES) * PIXELS_PER_MINUTE),
+            'text': f'{display_hour}:{minute:02d} {suffix}'
+        })
+        minutes += 30
+    return labels
+
+
+def build_week_grid(raw_rows, week_dates, day_names_short):
+    by_slot = {}
+
+    for row in raw_rows:
+        slot_id = row['slot_id']
+        if slot_id not in by_slot:
+            by_slot[slot_id] = {
+                'slot_id': slot_id,
+                'is_recurring': row['is_recurring'],
+                'day_of_week': row['day_of_week'],
+                'specific_date': row['specific_date'],
+                'start_time': row['start_time'],
+                'end_time': row['end_time'],
+                'capacity': row['capacity'],
+                'label': row['label'],
+                'bookings': []
+            }
+        if row['booking_id']:
+            by_slot[slot_id]['bookings'].append({
+                'booking_id': row['booking_id'],
+                'client_id': row['client_id'],
+                'client_name': row['client_name']
+            })
+
+    grid = {d.isoformat(): [] for d in week_dates}
+
+    for slot in by_slot.values():
+        start_min = time_to_minutes(slot['start_time'])
+        end_min = time_to_minutes(slot['end_time'])
+
+        clamped_start = max(start_min, DAY_START_MINUTES)
+        clamped_end = min(end_min, DAY_END_MINUTES)
+
+        slot['top_px'] = round((clamped_start - DAY_START_MINUTES) * PIXELS_PER_MINUTE)
+        slot['height_px'] = max(round((clamped_end - clamped_start) * PIXELS_PER_MINUTE), 24)
+
+        if slot['is_recurring']:
+            target_date = week_dates[slot['day_of_week']]
+            day_label = day_names_short[slot['day_of_week']]
+            slot['slot_info'] = f"{day_label} {slot['start_time']}\u2013{slot['end_time']}"
+            grid[target_date.isoformat()].append(slot)
+        else:
+            if slot['specific_date'] in grid:
+                d = date.fromisoformat(slot['specific_date'])
+                day_label = day_names_short[d.weekday()]
+                slot['slot_info'] = f"{day_label} {d.month}/{d.day} {slot['start_time']}\u2013{slot['end_time']}"
+                grid[slot['specific_date']].append(slot)
+
+    return grid
+
+
+@app.route('/api/admin/timetable', methods=['GET'])
+@admin_required
+def api_admin_timetable():
+    week_param = request.args.get('week')
+    if week_param:
+        try:
+            anchor = date.fromisoformat(week_param)
+        except ValueError:
+            anchor = date.today()
+    else:
+        anchor = date.today()
+
+    week_start = anchor - timedelta(days=anchor.weekday())
+    week_dates = [week_start + timedelta(days=i) for i in range(7)]
+    day_names_short = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+    prev_week = (week_start - timedelta(days=7)).isoformat()
+    next_week = (week_start + timedelta(days=7)).isoformat()
+    week_label = f"{week_dates[0].strftime('%b')} {week_dates[0].day} \u2013 {week_dates[6].strftime('%b')} {week_dates[6].day}, {week_dates[6].year}"
+
+    week_days = [
+        {'iso': d.isoformat(), 'day_name': day_names_short[i], 'day_num': d.day}
+        for i, d in enumerate(week_dates)
+    ]
+
+    raw_rows = db.get_full_timetable()
+    grid_slots = build_week_grid(raw_rows, week_dates, day_names_short)
+    time_labels = build_time_labels()
+    total_grid_height = round((DAY_END_MINUTES - DAY_START_MINUTES) * PIXELS_PER_MINUTE)
+
+    clients = db.get_all_clients()
+    clients_list = [{'id': c['id'], 'name': c['name']} for c in clients]
+
+    return jsonify({
+        'week_label': week_label,
+        'prev_week': prev_week,
+        'next_week': next_week,
+        'week_days': week_days,
+        'grid_slots': grid_slots,
+        'time_labels': time_labels,
+        'total_grid_height': total_grid_height,
+        'clients': clients_list,
+        'csrf_token': generate_csrf()
+    })
+
+
+@app.route('/admin/timetable', methods=['GET'])
+@admin_required
+def admin_timetable():
+    return render_template('admin_timetable.html', username=session['user'])
+
+
+@app.route('/api/admin/timetable/create_slot', methods=['POST'])
+@admin_required
+def api_admin_timetable_create_slot():
+    data = request.get_json()
+
+    is_recurring = data.get('is_recurring') == '1' or data.get('is_recurring') is True
+    start_time = sanitize(data.get('start_time', ''))
+    end_time = sanitize(data.get('end_time', ''))
+    label = sanitize(data.get('label', ''))
+
+    try:
+        capacity = int(data.get('capacity', 1))
+    except (ValueError, TypeError):
+        capacity = 1
+
+    day_of_week = None
+    specific_date = None
+
+    if is_recurring:
+        try:
+            day_of_week = int(data.get('day_of_week'))
+        except (ValueError, TypeError):
+            return jsonify({'success': False, 'message': 'Please select a day of the week.'}), 400
+    else:
+        specific_date = sanitize(data.get('specific_date', ''))
+        if not specific_date:
+            return jsonify({'success': False, 'message': 'Please select a date.'}), 400
+
+    if not start_time or not end_time:
+        return jsonify({'success': False, 'message': 'Start and end time are required.'}), 400
+
+    db.create_slot(
+        start_time=start_time,
+        end_time=end_time,
+        is_recurring=is_recurring,
+        day_of_week=day_of_week,
+        specific_date=specific_date,
+        capacity=capacity,
+        label=label
+    )
+
+    return jsonify({'success': True, 'message': 'Slot created.'})
+
+
+@app.route('/api/admin/timetable/book', methods=['POST'])
+@admin_required
+def api_admin_timetable_book():
+    data = request.get_json()
+    slot_id = data.get('slot_id')
+    client_id = data.get('client_id')
+
+    if not slot_id or not client_id:
+        return jsonify({'success': False, 'message': 'Missing slot or client.'}), 400
+
+    success, message = db.book_client_into_slot(int(slot_id), int(client_id))
+    return jsonify({'success': success, 'message': message})
+
+
+@app.route('/api/admin/timetable/cancel_booking', methods=['POST'])
+@admin_required
+def api_admin_timetable_cancel_booking():
+    data = request.get_json()
+    booking_id = data.get('booking_id')
+
+    if not booking_id:
+        return jsonify({'success': False, 'message': 'Missing booking id.'}), 400
+
+    db.cancel_booking(int(booking_id))
+    return jsonify({'success': True, 'message': 'Booking cancelled.'})
+
+
+@app.route('/api/admin/timetable/cancel_slot', methods=['POST'])
+@admin_required
+def api_admin_timetable_cancel_slot():
+    data = request.get_json()
+    slot_id = data.get('slot_id')
+
+    if not slot_id:
+        return jsonify({'success': False, 'message': 'Missing slot id.'}), 400
+
+    db.cancel_slot(int(slot_id))
+    return jsonify({'success': True, 'message': 'Slot cancelled.'})
 # ── Logout ─────────────────────────────────────────────────
 @app.route('/logout')
 def logout():
