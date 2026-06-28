@@ -107,3 +107,36 @@
 .nav-toggle.open span:nth-child(3) {
   transform: rotate(-45deg) translate(5px, -5px);
 }
+
+/* ============================================================
+   MOBILE NAVBAR
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.97);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+    gap: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: var(--z-fixed);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-link--login {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+}

@@ -642,3 +642,87 @@
     margin: 0 auto;
   }
 }
+
+/* ============================================================
+   MOBILE — ABOUT / JOURNEY PAGE
+   ============================================================ */
+@media (max-width: 900px) {
+  /* Transform stage — stack photo above controls */
+  .transform-stage {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .photo-frame__inner,
+  .photo-thumbs {
+    max-width: 100%;
+  }
+  .stat-badge--weight,
+  .stat-badge--bf {
+    right: 8px;
+  }
+  .transform-section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hero title — fix overflow with a lower clamp floor */
+  .journey-hero__title {
+    font-size: clamp(2.8rem, 14vw, 6rem);
+    letter-spacing: -0.5px;
+  }
+  .journey-hero__content {
+    padding-bottom: 60px;
+  }
+
+  /* Timeline — single column, dot on the left */
+  .timeline__line {
+    left: 24px;
+  }
+  .timeline-item--left,
+  .timeline-item--right {
+    justify-content: flex-start;
+    padding-left: 60px;
+    padding-right: 0;
+  }
+  .timeline-dot {
+    left: 24px;
+  }
+  .timeline-card {
+    max-width: 100%;
+  }
+
+  /* Chapter card stats — 2 columns instead of 3 cramming */
+  .chapter-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Philosophy title sizing already uses clamp with a reasonable floor,
+     but tighten letter-spacing slightly on small screens */
+  .philosophy__title {
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 480px) {
+  .journey-hero__title {
+    font-size: clamp(2.4rem, 15vw, 4.5rem);
+  }
+  .dot-connector {
+    min-width: 20px;
+  }
+  .chapter-card {
+    padding: 20px;
+  }
+  .chapter-stats {
+    grid-template-columns: 1fr;
+  }
+  .photo-ph__icon {
+    width: 52px;
+    height: 52px;
+  }
+  .transform-section {
+    padding-top: 60px;
+  }
+}

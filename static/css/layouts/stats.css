@@ -47,3 +47,68 @@
   height: 50px;
   background: rgba(255, 255, 255, 0.3);
 }
+
+/* ============================================================
+   MOBILE STATS STRIP — horizontal scroll-snap carousel
+   ============================================================ */
+@media (max-width: 768px) {
+  .stats-container {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 40px;
+    gap: 0;
+
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .stats-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stat-item {
+    flex-shrink: 0;
+    width: 70%;
+    scroll-snap-align: center;
+    padding: 0 16px;
+  }
+
+  .stat-divider {
+    flex-shrink: 0;
+    width: 1px;
+    height: 50px;
+    margin: 0 4px;
+  }
+
+  /* Edge fade hint so it reads as "swipeable" */
+  .stats-strip {
+    position: relative;
+  }
+  .stats-strip::before,
+  .stats-strip::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .stats-strip::before {
+    left: 0;
+    background: linear-gradient(to right, var(--blue), transparent);
+  }
+  .stats-strip::after {
+    right: 0;
+    background: linear-gradient(to left, var(--blue), transparent);
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-item {
+    width: 80%;
+  }
+}

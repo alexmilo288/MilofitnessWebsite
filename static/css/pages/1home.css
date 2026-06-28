@@ -257,3 +257,59 @@
   background: #c0392b;
   color: #fff;
 }
+
+/* ============================================================
+   MOBILE — HOMEPAGE GRIDS
+   ============================================================ */
+@media (max-width: 900px) {
+  /* About Teaser — stack image above text */
+  .about-teaser__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .about-teaser__img-wrap {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .about-teaser__text {
+    padding-left: 0;
+    text-align: center;
+  }
+  .about-teaser__text .section-title,
+  .about-teaser__text .section-eyebrow {
+    text-align: center;
+  }
+
+  /* Programs Preview — stack to single column */
+  .programs-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Socials — single column */
+  .socials-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Contact — stack form under details */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .contact-text .section-title,
+  .contact-text .section-eyebrow {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-card {
+    padding: 32px 24px;
+  }
+  .toast {
+    right: 1rem;
+    left: 1rem;
+    bottom: 1rem;
+  }
+}

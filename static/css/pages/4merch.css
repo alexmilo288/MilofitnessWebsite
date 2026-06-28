@@ -238,3 +238,53 @@
   color: var(--grey);
   margin-bottom: 16px;
 }
+
+/* ============================================================
+   MOBILE — MERCH PAGE
+   ============================================================ */
+@media (max-width: 900px) {
+  .merch-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .merch-main-img,
+  .merch-thumbs {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .merch-hero__info .section-eyebrow,
+  .merch-hero__info .section-title {
+    text-align: center;
+  }
+  .merch-description {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .worn-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .merch-hero {
+    padding-top: calc(var(--nav-h) + 40px);
+    padding-bottom: 60px;
+  }
+  .merch-purchase {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .worn-grid {
+    grid-template-columns: 1fr;
+  }
+  .merch-title {
+    font-size: clamp(2.2rem, 9vw, 3.5rem);
+  }
+}

@@ -127,3 +127,38 @@
   flex-wrap: wrap;
 }
 
+/* ============================================================
+   MOBILE — PROGRAMS PAGE
+   ============================================================ */
+@media (max-width: 768px) {
+  .service-block {
+    margin-bottom: 56px;
+  }
+  .section-divider {
+    margin-bottom: 56px;
+  }
+  .block-label {
+    margin-bottom: 32px;
+  }
+  .block-num {
+    font-size: 3.2rem;
+  }
+
+  .feature-item {
+    gap: 14px;
+  }
+  .feature-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  .contact-item__icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .follow-btns {
+    justify-content: flex-start;
+  }
+}
