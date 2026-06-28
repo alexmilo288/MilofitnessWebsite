@@ -64,6 +64,7 @@
   width: 32px;
   height: 1px;
   background: var(--blue);
+
 }
 
 .hero-title {
@@ -80,10 +81,12 @@
 .title-line {
   display: block;
   animation: fadeUp 0.9s ease both;
+  margin-top: -10px;
 }
 .title-line--white {
   color: var(--white);
   animation-delay: 0.15s;
+  margin-top: -10px;
 }
 .title-line--accent {
   color: var(--blue);
@@ -99,6 +102,7 @@
   color: rgba(255, 255, 255, 0.55);
   margin-bottom: 40px;
   animation: fadeUp 0.9s 0.35s ease both;
+  margin-top: -10px;
 }
 
 .hero-cta {
@@ -106,6 +110,8 @@
   gap: 16px;
   flex-wrap: wrap;
   animation: fadeUp 0.9s 0.45s ease both;
+  margin-top: -13px;
+
 }
 
 .hero-scroll-hint {

@@ -11,9 +11,7 @@ import bleach
 import re
 import user_management as db
 import calendar
- 
-
-
+from urllib.parse import urlparse
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -24,6 +22,25 @@ app.config['SECRET_KEY'] = 'milofitness-secret-key-2026'
 app.permanent_session_lifetime = timedelta(minutes=30)
 csrf = CSRFProtect(app)
 CORS(app)
+
+
+ALLOWED_REDIRECTS = {
+    '/',
+    '/2about',
+    '/3programs',
+    '/4merch',
+    '/6login',
+    '/7signup',
+}
+
+def is_safe_redirect_target(target):
+    """Only allow redirecting to a small set of known, internal paths."""
+    if not target:
+        return False
+    parsed = urlparse(target)
+    if parsed.netloc or parsed.scheme:
+        return False
+    return target in ALLOWED_REDIRECTS
 
 
 def get_db():
