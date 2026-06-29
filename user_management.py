@@ -335,3 +335,21 @@ def get_client_id_for_user(user_id):
     row = con.execute('SELECT client_id FROM users WHERE id = ?', (user_id,)).fetchone()
     con.close()
     return row['client_id'] if row else None
+
+#client dashboard timetable. 
+def get_client_id_for_user(user_id):
+    con = get_db()
+    row = con.execute('SELECT client_id FROM users WHERE id = ?', (user_id,)).fetchone()
+    con.close()
+    return row['client_id'] if row else None
+
+
+def get_user_by_client_id(client_id):
+    """Reverse lookup of get_client_id_for_user — finds the user account
+    linked to a given client, if one exists."""
+    con = get_db()
+    user = con.execute(
+        'SELECT * FROM users WHERE client_id = ?', (client_id,)
+    ).fetchone()
+    con.close()
+    return user

@@ -19,7 +19,7 @@ DB_PATH = os.path.join(BASE_DIR, 'database', 'milofitness.db')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'milofitness-secret-key-2026'
-app.permanent_session_lifetime = timedelta(minutes=30)
+
 csrf = CSRFProtect(app)
 CORS(app)
 
@@ -277,7 +277,7 @@ def verify_2fa():
                 if pending.get('client_code'):
                     db.redeem_client_code(pending['client_code'], user['id'])
 
-                session.permanent = True
+                
                 session['user'] = user['username']
                 session['user_id'] = user['id']
                 return redirect_after_auth(user['id'])
@@ -285,7 +285,7 @@ def verify_2fa():
                 user_id  = session.pop('2fa_user_id')
                 username = session.pop('2fa_username')
                 db.set_verified(user_id)
-                session.permanent = True
+                
                 session['user'] = username
                 session['user_id'] = user_id
                 return redirect_after_auth(user_id)
@@ -632,12 +632,20 @@ def format_time_12h(time_str):
 
 
 def send_booking_email(slot_id, client_id):
-    """Looks up the slot + client and emails the client a booking notification."""
+    """Looks up the slot + client and emails the client a booking notification.
+    Prefers the email on the linked user account (what they actually log in
+    with) over the client profile email, which may be blank or out of date."""
     slot = db.get_slot_by_id(slot_id)
     client = db.get_client_by_id(client_id)
 
-    if not slot or not client or not client['email']:
-        return  # nothing to send, or client has no email on file
+    if not slot or not client:
+        return
+
+    linked_user = db.get_user_by_client_id(client_id)
+    to_email = (linked_user['email'] if linked_user else None) or client['email']
+
+    if not to_email:
+        return  # no account email and no profile email — nothing to send to
 
     if slot['is_recurring']:
         day_label = DAY_NAMES_FULL[slot['day_of_week']]
@@ -648,7 +656,7 @@ def send_booking_email(slot_id, client_id):
     login_url = url_for('login', _external=True)
 
     email_utils.send_booking_notification_email(
-        to_email=client['email'],
+        to_email=to_email,
         client_name=client['name'],
         day_label=day_label,
         start_time=format_time_12h(slot['start_time']),
@@ -656,6 +664,7 @@ def send_booking_email(slot_id, client_id):
         label=slot['label'],
         login_url=login_url
     )
+
 
 @app.route('/api/admin/timetable/cancel_booking', methods=['POST'])
 @admin_required
