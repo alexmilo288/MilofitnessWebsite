@@ -607,8 +607,55 @@ def api_admin_timetable_book():
         return jsonify({'success': False, 'message': 'Missing slot or client.'}), 400
 
     success, message = db.book_client_into_slot(int(slot_id), int(client_id))
+
+    if success:
+        try:
+            send_booking_email(int(slot_id), int(client_id))
+        except Exception as e:
+            # Booking itself already succeeded — don't fail the request over email.
+            print(f"Booking email error: {e}")
+
     return jsonify({'success': success, 'message': message})
 
+
+DAY_NAMES_FULL = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+
+def format_time_12h(time_str):
+    """'14:30' -> '2:30 PM'"""
+    h, m = map(int, time_str.split(':'))
+    suffix = 'AM' if h < 12 else 'PM'
+    display_hour = h if h <= 12 else h - 12
+    if display_hour == 0:
+        display_hour = 12
+    return f'{display_hour}:{m:02d} {suffix}'
+
+
+def send_booking_email(slot_id, client_id):
+    """Looks up the slot + client and emails the client a booking notification."""
+    slot = db.get_slot_by_id(slot_id)
+    client = db.get_client_by_id(client_id)
+
+    if not slot or not client or not client['email']:
+        return  # nothing to send, or client has no email on file
+
+    if slot['is_recurring']:
+        day_label = DAY_NAMES_FULL[slot['day_of_week']]
+    else:
+        d = date.fromisoformat(slot['specific_date'])
+        day_label = d.strftime('%A %-d %B')  # e.g. "Wednesday 2 July"
+
+    login_url = url_for('login', _external=True)
+
+    email_utils.send_booking_notification_email(
+        to_email=client['email'],
+        client_name=client['name'],
+        day_label=day_label,
+        start_time=format_time_12h(slot['start_time']),
+        end_time=format_time_12h(slot['end_time']),
+        label=slot['label'],
+        login_url=login_url
+    )
 
 @app.route('/api/admin/timetable/cancel_booking', methods=['POST'])
 @admin_required
