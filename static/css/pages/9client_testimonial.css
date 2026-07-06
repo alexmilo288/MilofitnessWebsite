@@ -1,0 +1,189 @@
+/* ============================================================
+   MILOFITNESS — Success Stories Page
+   ============================================================ */
+
+/* Hero — full height, background image + overlay (like home page hero) */
+.stories-hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.stories-hero__bg {
+  position: absolute;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/static/images/UI/story_bg1.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.stories-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+.stories-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.stories-hero .hero-eyebrow {
+  justify-content: center;
+  font-size: 16px;
+}
+
+.stories-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 11vw, 9rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+  color: var(--white);
+  line-height: 0.9;
+  margin: 16px 0 24px;
+}
+
+.stories-hero__sub {
+  max-width: 650px;
+  margin: 0 auto;
+    color: rgba(255, 255, 255, 0.55);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* Transformation grid */
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.story-card {
+  background: var(--dark-3);
+  border: 1px solid var(--dark-4);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.story-card:hover {
+  border-color: rgba(38, 168, 248, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.story-card__photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.story-photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--dark-4);
+}
+.story-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.story-photo__tag {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(10, 10, 10, 0.75);
+  color: var(--off-white);
+  font-family: var(--font-cond);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+.story-photo__tag--accent {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.story-card__body {
+  padding: 28px;
+  text-align: center;
+}
+.story-card__body .testimonial-stars {
+  margin-bottom: 14px;
+}
+.story-card__body .testimonial-text {
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+/* Text-only reviews grid */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.review-card {
+  text-align: center;
+  padding: 32px 28px;
+}
+.review-card .testimonial-stars {
+  margin-bottom: 14px;
+}
+.review-card .testimonial-text {
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+/* CTA */
+.stories-cta {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.stories-cta__btns {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+/* ============================================================
+   MOBILE — SUCCESS STORIES PAGE
+   ============================================================ */
+@media (max-width: 900px) {
+  .stories-grid {
+    grid-template-columns: 1fr;
+  }
+  .reviews-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  .story-card__body {
+    padding: 20px;
+  }
+  .stories-hero__title {
+    font-size: clamp(3rem, 13vw, 5rem);
+  }
+}

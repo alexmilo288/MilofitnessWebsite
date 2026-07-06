@@ -25,7 +25,7 @@
 
       <ul class="nav-links" id="navLinks">
         <li><a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}active{% endif %}">Home</a></li>
-        <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">My Story</a></li>
+        <li><a href="{{ url_for('success_stories') }}" class="nav-link {% if request.endpoint == 'success_stories' %}active{% endif %}">Success Stories</a></li>
         <li><a href="{{ url_for('programs') }}" class="nav-link {% if request.endpoint == 'programs' %}active{% endif %}">Programs</a></li>
         <li><a href="{{ url_for('merch') }}" class="nav-link {% if request.endpoint == 'merch' %}active{% endif %}">Merch</a></li>
         <li><a href="{{ url_for('login') }}" class="nav-link nav-link--login {% if request.endpoint == 'login' %}active{% endif %}">Login</a></li>

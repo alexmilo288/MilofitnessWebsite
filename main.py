@@ -23,7 +23,6 @@ app.config['SECRET_KEY'] = 'milofitness-secret-key-2026'
 csrf = CSRFProtect(app)
 CORS(app)
 
-
 ALLOWED_REDIRECTS = {
     '/',
     '/2about',
@@ -112,10 +111,22 @@ def redirect_after_auth(user_id):
 @app.route('/')
 def home():
     con = get_db()
-    testimonials = con.execute('SELECT * FROM testimonials').fetchall()
+    testimonials = con.execute(
+        '''SELECT * FROM testimonials
+           WHERE (before_image IS NULL OR TRIM(before_image) = '')
+             AND (after_image IS NULL OR TRIM(after_image) = '')
+           ORDER BY id DESC'''
+    ).fetchall()
     con.close()
     return render_template('1home.html', testimonials=testimonials)
 
+
+@app.route('/success-stories')
+def success_stories():
+      con = get_db()
+      testimonials = con.execute('SELECT * FROM testimonials ORDER BY id DESC').fetchall()
+      con.close()
+      return render_template('9client_testimonial.html', testimonials=testimonials)
 
 @app.route('/2about')
 def about():
@@ -168,6 +179,12 @@ def login():
         user = db.get_user_by_username(username)
 
         if user and bcrypt.checkpw(password.encode(), user['password'].encode()):
+            if user['is_admin']:
+                # Admins skip 2FA entirely
+                session['user'] = user['username']
+                session['user_id'] = user['id']
+                return redirect_after_auth(user['id'])
+
             code = email_utils.generate_code()
             session['2fa_code'] = code
             session['2fa_expires'] = (datetime.utcnow() + timedelta(minutes=10)).isoformat()

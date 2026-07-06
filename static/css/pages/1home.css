@@ -34,6 +34,7 @@
   inset: 0;
   background: linear-gradient(135deg, transparent 40%, rgba(10, 132, 255, 0.04));
 }
+
 .img-accent-border {
   position: absolute;
   bottom: -14px;

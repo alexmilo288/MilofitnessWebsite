@@ -1,0 +1,72 @@
+{% extends "0base.html" %}
+{% block title %}MiloFitness – Success Stories{% endblock %}
+
+{% block content %}
+
+<!-- ========== STORIES HERO ========== -->
+<section class="stories-hero">
+  <div class="stories-hero__bg"></div>
+  <div class="stories-hero__overlay"></div>
+
+  <div class="container">
+    <p class="hero-eyebrow">Real People. Real Results.</p>
+    <h1 class="stories-hero__title">Success Stories</h1>
+    <p class="stories-hero__sub">
+      Every transformation here started the same way — someone deciding they were done waiting.
+      These are Alex's clients, in their own words.
+    </p>
+  </div>
+</section>
+
+<!-- ========== TRANSFORMATION GRID (photo testimonials) ========== -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Before & After</p>
+      <h2 class="section-title">Transformations</h2>
+    </div>
+
+    <div class="stories-grid">
+      {% for t in testimonials %}
+        {% if t.before_image and t.after_image %}
+        <div class="story-card">
+          <div class="story-card__photos">
+            <div class="story-photo">
+              <img src="{{ url_for('static', filename=t.before_image) }}" alt="{{ t.name }} before">
+              <span class="story-photo__tag">Before</span>
+            </div>
+            <div class="story-photo">
+              <img src="{{ url_for('static', filename=t.after_image) }}" alt="{{ t.name }} after">
+              <span class="story-photo__tag story-photo__tag--accent">After</span>
+            </div>
+          </div>
+
+          <div class="story-card__body">
+            <div class="testimonial-stars">
+              {% for i in range(t.rating) %}★{% endfor %}
+            </div>
+            <p class="testimonial-text">"{{ t.text }}"</p>
+            <span class="testimonial-name">— {{ t.name }}</span>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="section">
+  <div class="container">
+    <div class="stories-cta">
+      <p class="section-eyebrow">Your Turn</p>
+      <h2 class="section-title">Ready To Write Your Own Story?</h2>
+      <div class="stories-cta__btns">
+        <a href="{{ url_for('programs') }}" class="btn btn--primary">Find A Program</a>
+        <a href="{{ url_for('about') }}" class="btn btn--ghost">Meet Alex</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
