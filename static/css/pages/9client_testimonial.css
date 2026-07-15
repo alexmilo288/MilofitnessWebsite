@@ -19,7 +19,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('/static/images/UI/story_bg1.png');
+  background-image: url('/static/images/UI/story_bg2.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -185,5 +185,23 @@
   }
   .stories-hero__title {
     font-size: clamp(3rem, 13vw, 5rem);
+  }
+}
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    transition: none;
+    opacity: 1;
+    transform: none;
   }
 }
