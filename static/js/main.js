@@ -206,7 +206,7 @@ document.addEventListener('mouseenter', () => {
       phase: "Chapter 01",
       title: "The Skinny Kid",
       quote: "I just wanted to look big.",
-      body: "2017. Alex was an anxious guy who didnt fill out any of his shirts. Finally, sick and tired of looking small, he stole his father's dumbells and started working out in his garage.",
+      body: "2017. Alex was an anxious guy who didn't fill out any of his shirts. Finally, sick and tired of looking small, he stole his father's dumbbells and started working out in his garage.",
       stats: [
         { val: "58<small>kg</small>", label: "Body Weight" },
         { val: "0",                   label: "Gym Sessions" },
