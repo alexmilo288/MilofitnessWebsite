@@ -4,7 +4,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 SMTP_EMAIL = "alexmilo288@gmail.com"
-SMTP_PASSWORD = "oxvt hvgy pxat ktvr"       
+SMTP_PASSWORD = "ivjp jcsb pjyc zjzp"       
 
 
 def generate_code():
