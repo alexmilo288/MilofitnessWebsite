@@ -3,7 +3,7 @@ import random
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-SMTP_EMAIL = "niharsuthar18@gmail.com"
+SMTP_EMAIL = "alexmilo288@gmail.com"
 SMTP_PASSWORD = "oxvt hvgy pxat ktvr"       
 
 
