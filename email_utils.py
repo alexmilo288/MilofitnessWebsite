@@ -55,7 +55,7 @@ def send_contact_email(name, email, program, message):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"MiloFitness Enquiry — {name}"
     msg["From"] = SMTP_EMAIL
-    msg["To"] = "26sutharn@student.pac.nsw.edu.au"  
+    msg["To"] = "alexmilo288@gmail.com"  
     html = f"""
     <div style="font-family:Arial,sans-serif;background:#0a0a0a;padding:40px;">
       <div style="max-width:480px;margin:0 auto;background:#181818;border-radius:8px;
