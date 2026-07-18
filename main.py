@@ -65,7 +65,7 @@ def sitemap():
         {'loc': '/4merch', 'priority': '0.6', 'changefreq': 'monthly'},
         {'loc': '/success-stories', 'priority': '0.8', 'changefreq': 'weekly'},
     ]
-    base_url = 'https://yourdomain.com'  # ← replace with your real domain
+    base_url = 'https://milofitness.com.au'  
 
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
     xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
