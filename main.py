@@ -12,6 +12,7 @@ import re
 import user_management as db
 import calendar
 from urllib.parse import urlparse
+from flask import Response
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -54,6 +55,29 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-XSS-Protection'] = '1; mode=block'
     return response
+
+@app.route('/sitemap.xml')
+def sitemap():
+    pages = [
+        {'loc': '/', 'priority': '1.0', 'changefreq': 'weekly'},
+        {'loc': '/2about', 'priority': '0.7', 'changefreq': 'monthly'},
+        {'loc': '/3programs', 'priority': '0.9', 'changefreq': 'weekly'},
+        {'loc': '/4merch', 'priority': '0.6', 'changefreq': 'monthly'},
+        {'loc': '/success-stories', 'priority': '0.8', 'changefreq': 'weekly'},
+    ]
+    base_url = 'https://yourdomain.com'  # ← replace with your real domain
+
+    xml = ['<?xml version="1.0" encoding="UTF-8"?>']
+    xml.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    for page in pages:
+        xml.append('  <url>')
+        xml.append(f'    <loc>{base_url}{page["loc"]}</loc>')
+        xml.append(f'    <changefreq>{page["changefreq"]}</changefreq>')
+        xml.append(f'    <priority>{page["priority"]}</priority>')
+        xml.append('  </url>')
+    xml.append('</urlset>')
+
+    return Response('\n'.join(xml), mimetype='application/xml')
 
 
 @app.errorhandler(CSRFError)
