@@ -85,7 +85,7 @@ def send_contact_email(name, email, program, message):
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(SMTP_EMAIL, SMTP_PASSWORD)
-        server.sendmail(SMTP_EMAIL, "26sutharn@student.pac.nsw.edu.au", msg.as_string())
+        server.sendmail(SMTP_EMAIL, "alexmilo288@gmail.com", msg.as_string())
 
 
 
