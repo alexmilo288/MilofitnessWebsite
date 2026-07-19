@@ -34,74 +34,90 @@
       <div class="transform-stage">
 
         <!-- ── Photo side ── -->
-      <div class="photo-stage">
+        <div class="photo-stage">
 
-        <!-- Main active photo frame -->
-        <div class="photo-frame" id="activePhoto">
-          <div class="photo-frame__inner" id="photoInner">
+          <!-- Main active photo frame -->
+          <div class="photo-frame" id="activePhoto">
+            <div class="photo-frame__inner" id="photoInner">
 
-        <!-- Chapter 0 — 2017 -->
-        <div class="photo-ph photo-ph--0 active" data-chapter="0">
-          <img src="{{ url_for('static', filename='images/UI/skinny_photo1.png') }}" alt="Alex 2017" />
-        </div>
+              <!-- Chapter 0 — 2017 -->
+              <div class="photo-ph photo-ph--0 active" data-chapter="0">
+                <img src="{{ url_for('static', filename='images/UI/skinny_photo1.png') }}" alt="Alex 2017" />
+              </div>
 
-        <!-- Chapter 1 — 2019 -->
-        <div class="photo-ph photo-ph--1" data-chapter="1">
-          <img src="{{ url_for('static', filename='images/UI/skinny_photo2.png') }}" alt="Alex 2019" />
-        </div>
+              <!-- Chapter 1 — 2019 -->
+              <div class="photo-ph photo-ph--1" data-chapter="1">
+                <img src="{{ url_for('static', filename='images/UI/skinny_photo2.png') }}" alt="Alex 2019" />
+              </div>
 
               <!-- Chapter 2 — 2022 -->
-        <div class="photo-ph photo-ph--2" data-chapter="2">
-          <img src="{{ url_for('static', filename='images/UI/growing_photo3.png') }}" alt="Alex 2022" />
-        </div>
+              <div class="photo-ph photo-ph--2" data-chapter="2">
+                <img src="{{ url_for('static', filename='images/UI/growing_photo3.png') }}" alt="Alex 2022" />
+              </div>
 
               <!-- Chapter 3 — 2023 -->
-        <div class="photo-ph photo-ph--3" data-chapter="3">
-          <img src="{{ url_for('static', filename='images/UI/growing_photo4.png') }}" alt="Alex 2023" />
-        </div>
+              <div class="photo-ph photo-ph--3" data-chapter="3">
+                <img src="{{ url_for('static', filename='images/UI/growing_photo4.png') }}" alt="Alex 2023" />
+              </div>
 
-              <!-- Chapter 4 — 2026 -->
-        <div class="photo-ph photo-ph--4" data-chapter="4">
-          <img src="{{ url_for('static', filename='images/UI/final_photo5.png') }}" alt="Alex 2026" />
-        </div>
+              <!-- Chapter 4 — 2025 -->
+              <div class="photo-ph photo-ph--4" data-chapter="4">
+                <img src="{{ url_for('static', filename='images/UI/final_photo5.png') }}" alt="Alex 2025" />
+              </div>
 
-        </div>
-      </div>
+              <!-- Chapter 5 — 2026 -->
+              <div class="photo-ph photo-ph--5" data-chapter="5">
+                <img src="{{ url_for('static', filename='images/UI/AlexPhoto.png') }}" alt="Alex photo" />
+              </div>
+
+            </div><!-- /photoInner -->
+          </div><!-- /activePhoto -->
 
           <!-- Thumbnail strip -->
-      <div class="photo-thumbs">
-        <div class="photo-thumb active" data-thumb="0">
-          <div class="photo-thumb__img">
-            <img src="{{ url_for('static', filename='images/UI/skinny_photo1.png') }}" alt="2017" />
-          </div>
-            
-      <span class="photo-thumb__year">2017</span>
-        </div>
-          <div class="photo-thumb" data-thumb="1">
-            <div class="photo-thumb__img">
-              <img src="{{ url_for('static', filename='images/UI/skinny_photo2.png') }}" alt="2019" />   
-          </div>
+          <div class="photo-thumbs">
+            <div class="photo-thumb active" data-thumb="0">
+              <div class="photo-thumb__img">
+                <img src="{{ url_for('static', filename='images/UI/skinny_photo1.png') }}" alt="2017" />
+              </div>
+              <span class="photo-thumb__year">2017</span>
+            </div>
+
+            <div class="photo-thumb" data-thumb="1">
+              <div class="photo-thumb__img">
+                <img src="{{ url_for('static', filename='images/UI/skinny_photo2.png') }}" alt="2019" />
+              </div>
               <span class="photo-thumb__year">2019</span>
             </div>
+
             <div class="photo-thumb" data-thumb="2">
               <div class="photo-thumb__img">
                 <img src="{{ url_for('static', filename='images/UI/growing_photo3.png') }}" alt="2022" />
               </div>
               <span class="photo-thumb__year">2022</span>
             </div>
+
             <div class="photo-thumb" data-thumb="3">
               <div class="photo-thumb__img">
                 <img src="{{ url_for('static', filename='images/UI/growing_photo4.png') }}" alt="2023" />
               </div>
               <span class="photo-thumb__year">2023</span>
             </div>
+
             <div class="photo-thumb" data-thumb="4">
               <div class="photo-thumb__img">
-                <img src="{{ url_for('static', filename='images/UI/final_photo5.png') }}" alt="2026" />
+                <img src="{{ url_for('static', filename='images/UI/final_photo5.png') }}" alt="2025" />
+              </div>
+              <span class="photo-thumb__year">2025</span>
+            </div>
+
+            <div class="photo-thumb" data-thumb="5">
+              <div class="photo-thumb__img">
+                <img src="{{ url_for('static', filename='images/UI/AlexPhoto.png') }}" alt="2026" />
               </div>
               <span class="photo-thumb__year">2026</span>
             </div>
-          </div>
+
+          </div><!-- /photo-thumbs -->
 
         </div><!-- /photo-stage -->
 
@@ -131,8 +147,13 @@
             </button>
             <div class="dot-connector"></div>
             <button class="chapter-dot" data-chapter="4">
-              <span class="dot-year">2026</span>
+              <span class="dot-year">2025</span>
               <span class="dot-label">The Stage</span>
+            </button>
+            <div class="dot-connector"></div>
+            <button class="chapter-dot" data-chapter="5">
+              <span class="dot-year">2026</span>
+              <span class="dot-label">The Future</span>
             </button>
           </div>
 
@@ -144,20 +165,21 @@
               <span>2019</span>
               <span>2022</span>
               <span>2023</span>
+              <span>2025</span>
               <span>2026</span>
             </div>
           </div>
 
           <!-- Chapter story card -->
-<!-- Chapter story card -->
-    <div class="chapter-card" id="chapterCard">
-      <div class="chapter-card__phase" id="cardPhase"></div>
-      <h3 class="chapter-card__title" id="cardTitle"></h3>
-      <p class="chapter-card__quote" id="cardQuote"></p>
-      <p class="chapter-card__body" id="cardBody"></p>
-      <div class="chapter-stats" id="chapterStats"></div>
-    </div>
-  </div><!-- /transform-controls -->
+          <div class="chapter-card" id="chapterCard">
+            <div class="chapter-card__phase" id="cardPhase"></div>
+            <h3 class="chapter-card__title" id="cardTitle"></h3>
+            <p class="chapter-card__quote" id="cardQuote"></p>
+            <p class="chapter-card__body" id="cardBody"></p>
+            <div class="chapter-stats" id="chapterStats"></div>
+          </div>
+
+        </div><!-- /transform-controls -->
 
       </div>
     </div>
@@ -256,12 +278,12 @@
     <div class="container">
       <div class="philosophy__inner">
         <p class="section-eyebrow">The Method</p>
-        <h2 class="philosophy__title">BUILT ON PROOF,<br><span class="accent">NOT PROMISES</span></h2>
+        <h2 class="philosophy__title">BUILT AROUND<br><span class="accent">YOUR LIFE</span></h2>
         <p class="philosophy__body">
-          Every program Alex coaches is rooted in exactly what worked for him and the 50+ clients who came after. No fluff, no fads. Just the fundamentals, applied with precision and catered to your unique needs.
+          No two clients train the same, because no two lives look the same. Every program Alex builds starts with your schedule, your routine, your goals — then works backward from there. Real results, built around the way you actually live.
         </p>
         <div class="philosophy__ctas">
-          <a href="{{ url_for('programs') }}" class="btn btn--primary">View Programs</a>
+          <a href="{{ url_for('programs') }}" class="btn btn--primary">View Services</a>
         </div>
       </div>
     </div>

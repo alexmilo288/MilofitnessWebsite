@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{% block title %}MiloFitness{% endblock %}</title>
+  <title>{% block title %}Milo Fitness | Personal Training & Nutrition Coaching{% endblock %}</title>
+  <meta name="description" content="{% block page_description %}Certified personal trainer and nutrition coach. 1-on-1 in-person training tailored entirely to your goals, schedule, and lifestyle.{% endblock %}">
+
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/UI/logo.png') }}">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   {% block extra_css %}{% endblock %}
 </head>
-<body>
+
 
   <!-- ========== NAVBAR ========== -->
   <nav class="navbar" id="navbar">

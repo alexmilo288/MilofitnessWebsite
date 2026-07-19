@@ -12,6 +12,17 @@
 .about-teaser__img-wrap {
   position: relative;
 }
+
+.about-teaser__img-wrap {
+  position: relative;
+}
+.about-teaser__img-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
 .img-placeholder {
   position: relative;
   aspect-ratio: 3/4;

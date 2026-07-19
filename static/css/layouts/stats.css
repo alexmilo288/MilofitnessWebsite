@@ -58,13 +58,49 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding: 0 40px;
+    padding: 0 15%;
     gap: 0;
 
-    /* Hide scrollbar */
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
+  .stats-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stat-item {
+    flex-shrink: 0;
+    width: 70%;
+    scroll-snap-align: center;
+    padding: 0 16px;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stats-strip {
+    position: relative;
+  }
+  .stats-strip::before,
+  .stats-strip::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 24px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .stats-strip::before {
+    left: 0;
+    background: linear-gradient(to right, var(--blue), transparent);
+  }
+  .stats-strip::after {
+    right: 0;
+    background: linear-gradient(to left, var(--blue), transparent);
+  }
+
   .stats-container::-webkit-scrollbar {
     display: none;
   }
@@ -109,6 +145,9 @@
 
 @media (max-width: 480px) {
   .stat-item {
-    width: 80%;
+    width: 76%;
+  }
+  .stats-container {
+    padding: 0 12%;
   }
 }

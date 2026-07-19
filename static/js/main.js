@@ -242,10 +242,19 @@ document.addEventListener('mouseenter', () => {
       phase: "Chapter 05",
       title: "The Stage",
       quote: "Every rep, every meal, every early morning — it all led here.",
-      body: "2026. The culmination of 9 years of dedication. Stepped on stage for the first time and placed in Men's Physique. The skinny kid is gone.",
+      body: "2026. The culmination of 6 years of dedication in the gym. Stepped on stage for the first time and placed in Men's Classic Bodybuilding.",
       stats: [
         { val: "89<small>kg</small>", label: "Stage Weight" },
       ]
+    },
+    {
+    phase: "Chapter 06",
+    title: "The Future",
+    quote: "The journey doesn't end here.",
+    body: "The future is bright, and the journey continues, as Alex continues to push his limits and inspire others on their fitness journeys.",
+    stats: [
+      { val: "95<small>kg</small>", label: "Body Weight" },
+    ]
     }
   ];
 
