@@ -30,7 +30,7 @@
         <li><a href="{{ url_for('success_stories') }}" class="nav-link {% if request.endpoint == 'success_stories' %}active{% endif %}">Success Stories</a></li>
         <li><a href="{{ url_for('programs') }}" class="nav-link {% if request.endpoint == 'programs' %}active{% endif %}">Services</a></li>
         <li><a href="{{ url_for('merch') }}" class="nav-link {% if request.endpoint == 'merch' %}active{% endif %}">Merch</a></li>
-        <li><a href="{{ url_for('programs') }}" class="nav-link nav-link--login {% if request.endpoint == 'login' %}active{% endif %}">Apply Now</a></li>
+        <li><a href="{{ url_for('programs') }}#contact" class="nav-link nav-link--login {% if request.endpoint == 'programs' %}active{% endif %}">Apply Now</a></li>
       </ul>
     </div>
   </nav>

@@ -130,3 +130,32 @@
 .card-link:hover {
   color: var(--white);
 }
+
+/* ============================================================
+   Worn-by cards — image-only, no text
+   ============================================================ */
+.worn-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.worn-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--dark-3);
+  transition: all var(--transition);
+}
+
+.worn-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.worn-card img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}

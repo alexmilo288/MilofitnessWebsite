@@ -2,8 +2,6 @@
    MILOFITNESS — Global Responsive Overrides
    ============================================================ */
 
-
-
 /* Tablet */
 @media (max-width: 1024px) {
   .programs-grid {
@@ -35,18 +33,8 @@
   }
 
   .nav-logo img {
-  height: 48px;
-}
-
-
-
-@media (max-width: 480px) {
-  .hero-title {
-    font-size: clamp(3.5rem, 15vw, 6rem);
+    height: 48px;
   }
-}
-
-
 
   .section {
     padding: 70px 0;
@@ -75,15 +63,6 @@
   .nav-link--login {
     margin-left: 0;
     margin-top: 8px;
-  }
-
-  /* Hero */
-  .hero-title {
-    letter-spacing: -2px;
-  }
-  .hero-cta {
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   /* Grids */
@@ -182,10 +161,6 @@
 
 /* Small Mobile */
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: clamp(4.5rem, 22vw, 7rem);
-  }
-
   .login-card__header {
     padding: 24px 20px 0;
   }
