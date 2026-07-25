@@ -208,7 +208,7 @@ document.addEventListener('mouseenter', () => {
       quote: "I just wanted to look big.",
       body: "2017. Alex was an anxious guy who didn't fill out any of his shirts. Finally, sick and tired of looking small, he stole his father's dumbbells and started working out in his garage.",
       stats: [
-        { val: "58<small>kg</small>", label: "Body Weight" },
+        { val: "", label: "" },
       ]
     },
     {
@@ -217,7 +217,7 @@ document.addEventListener('mouseenter', () => {
       quote: "Walked into the gym and had no idea what I was doing.",
       body: "2019. Alex would spam pushups before a basketball game to look big, yet it was only until he won a gym membership in a competition at school, that he took the first steps towards his transformation. He was clueless, but he was in love with the process from day one.",
       stats: [
-        { val: "60<small>kg</small>", label: "Body Weight" },
+        { val: "", label: "" },,
 
       ]
     },
@@ -227,7 +227,7 @@ document.addEventListener('mouseenter', () => {
       quote: "Three years in and I finally started to look like I lifted.",
       body: "2022. Diet dialled in. Training smarter. The compounding effect of consistency as Alex trained 5-6 days a week was finally showing up in the mirror. ",
       stats: [
-        { val: "80<small>kg</small>", label: "Body Weight" },
+        { val: "", label: "" },
       ]
     },
     {
@@ -236,6 +236,7 @@ document.addEventListener('mouseenter', () => {
       quote: "If I could do this, I knew I could help others do it too.",
       body: "2023. Certified PT. 50+ clients transformed. What started as a personal obsession became a business built on real results.",
       stats: [
+        { val: "", label: "" }
       ]
     },
     {
@@ -244,19 +245,19 @@ document.addEventListener('mouseenter', () => {
       quote: "Every rep, every meal, every early morning — it all led here.",
       body: "2026. The culmination of 6 years of dedication in the gym. Stepped on stage for the first time and placed in Men's Classic Bodybuilding.",
       stats: [
-        { val: "89<small>kg</small>", label: "Stage Weight" },
+        { val: "", label: "" },
       ]
     },
     {
     phase: "Chapter 06",
     title: "The Future",
     quote: "The journey doesn't end here.",
-    body: "The future is bright, and the journey continues, as Alex continues to push his limits and inspire others on their fitness journeys.",
+    body: "The journey continues for always striving for more, and helping others become the best version of themselves.",
     stats: [
-      { val: "95<small>kg</small>", label: "Body Weight" },
+      { val: "", label: "" }
     ]
-    }
-  ];
+  }
+];
 
   const TOTAL = chapters.length - 1; // 4
 
