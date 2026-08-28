@@ -571,7 +571,7 @@
 .partnership {
   position: relative;
   overflow: hidden;
-  background: var(--dark-3); 
+  background: var(--dark-3);
   isolation: isolate;
 }
 .partnership__inner {
@@ -580,15 +580,24 @@
   gap: 80px;
   align-items: center;
 }
+.partnership--reverse .partnership__inner {
+  grid-template-columns: 1fr 1fr;
+  direction: rtl;
+}
+.partnership--reverse .partnership__inner > * {
+  direction: ltr;
+}
 .partnership__img-wrap {
   display: flex;
   justify-content: center;
 }
 .partnership__img-wrap img {
-  max-width: 480px; 
+  max-width: 480px;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-lg); 
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--dark-4);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 .partnership__text .section-eyebrow,
 .partnership__text .section-title {
@@ -607,10 +616,11 @@
   display: inline-flex;
   align-items: center;
   gap: 16px;
-  background: var(--dark); 
+  background: var(--dark);
   border: 1px solid var(--blue);
   border-radius: var(--radius);
   padding: 16px 28px;
+  box-shadow: 0 0 20px var(--blue-glow);
 }
 .partnership__code-label {
   font-family: var(--font-cond);
@@ -628,11 +638,25 @@
   color: var(--blue);
 }
 
+/* Gold accent for Muscle Nation */
+.partnership--reverse .partnership__img-wrap img {
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(245,166,35,0.15);
+}
+.partnership--reverse .partnership__code {
+  border-color: #f5a623;
+  box-shadow: 0 0 20px rgba(245,166,35,0.25);
+}
+.partnership--reverse .partnership__code-value {
+  color: #f5a623;
+}
+
 @media (max-width: 768px) {
-  .partnership__inner {
+  .partnership__inner,
+  .partnership--reverse .partnership__inner {
     grid-template-columns: 1fr;
     gap: 32px;
     text-align: center;
+    direction: ltr;
   }
   .partnership__text .section-eyebrow,
   .partnership__text .section-title {
@@ -643,86 +667,6 @@
   }
 }
 
-/* ============================================================
-   MOBILE — ABOUT / JOURNEY PAGE
-   ============================================================ */
-@media (max-width: 900px) {
-  /* Transform stage — stack photo above controls */
-  .transform-stage {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .photo-frame__inner,
-  .photo-thumbs {
-    max-width: 100%;
-  }
-  .stat-badge--weight,
-  .stat-badge--bf {
-    right: 8px;
-  }
-  .transform-section {
-    padding-top: 80px;
-    padding-bottom: 80px;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Hero title — fix overflow with a lower clamp floor */
-  .journey-hero__title {
-    font-size: clamp(2.8rem, 14vw, 6rem);
-    letter-spacing: -0.5px;
-  }
-  .journey-hero__content {
-    padding-bottom: 60px;
-  }
-
-  /* Timeline — single column, dot on the left */
-  .timeline__line {
-    left: 24px;
-  }
-  .timeline-item--left,
-  .timeline-item--right {
-    justify-content: flex-start;
-    padding-left: 60px;
-    padding-right: 0;
-  }
-  .timeline-dot {
-    left: 24px;
-  }
-  .timeline-card {
-    max-width: 100%;
-  }
-
-  /* Chapter card stats — 2 columns instead of 3 cramming */
-  .chapter-stats {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  /* Philosophy title sizing already uses clamp with a reasonable floor,
-     but tighten letter-spacing slightly on small screens */
-  .philosophy__title {
-    letter-spacing: 1px;
-  }
-}
-
-@media (max-width: 480px) {
-  .journey-hero__title {
-    font-size: clamp(2.4rem, 15vw, 4.5rem);
-  }
-  .dot-connector {
-    min-width: 20px;
-  }
-  .chapter-card {
-    padding: 20px;
-  }
-  .chapter-stats {
-    grid-template-columns: 1fr;
-  }
-  .photo-ph__icon {
-    width: 52px;
-    height: 52px;
-  }
-  .transform-section {
-    padding-top: 60px;
-  }
+.partnership--reverse .partnership__text .section-eyebrow {
+  color: #f5a623;
 }
